@@ -3,9 +3,18 @@ class Car:
         # initialise car class
         self.name = name
         self.orientation = orientation
-        self.row = row
-        self.col = col
-        self.length = length
+        self.row = int(row)
+        self.col = int(col)
+        self.length = int(length)
+
+        self.position = {}
+
+    def is_red(self):
+        # check if this car is the red car
+        if self.name == "X":
+            return True
+        else:
+            return False
 
     def move(self, blocks):
         # moves the car along the number of blocks depending on orientation
@@ -16,11 +25,11 @@ class Car:
             self.col = self.col + blocks
 
         else:
-            return False # nodig in het geval dat er iets niet klopt??
+            # in case there is an error in the loaded orientation
+            return False
 
-    def position(self):
+    def get_position(self):
         # returns position of car on the board
-        position["row"] = self.row
-        position["col"] = self.col
-        return position
-
+        self.position["row"] = self.row
+        self.position["col"] = self.col
+        return self.position
