@@ -1,5 +1,5 @@
 import csv
-from cars import Car
+from .cars import Car
 
 
 class Board():
@@ -20,6 +20,3 @@ class Board():
 
         return cars
 
-
-if __name__ == '__main__':
-    print(Board("data/Rushhour6x6_1.csv").__str__())
