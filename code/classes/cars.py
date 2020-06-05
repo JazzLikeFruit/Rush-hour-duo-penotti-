@@ -10,31 +10,16 @@ class Car:
         self.move_count = 0
         self.block_count = 0
 
-    def is_red(self):
+    #def is_red(self):
         # check if this car is the red car
-        if self.name == "X":
-            return True
-        else:
-            return False
+        #if self.name == "X":
+            #return True
+        #else:
+            #return False
 
-    def move(self, blocks):
-        # moves the car along the number of blocks depending on orientation
-        if self.orientation == "V":
-            self.row = self.row + blocks
-
-        elif self.orientation == "H":
-            self.col = self.col + blocks
-
-        else:
-            # in case there is an error in the loaded orientation
-            return False
-
-        self.move_count += 1
-        self.block_count += blocks
-
-    def get_name(self):
+    #def get_name(self):
         # returns the name of the car
-        return self.name
+        #return self.name
 
     def get_position(self):
         # returns position of car on the board

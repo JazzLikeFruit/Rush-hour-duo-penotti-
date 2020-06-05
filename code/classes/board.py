@@ -9,7 +9,7 @@ class Board():
 
     def load_cars(self, datafile):
         """
-        Load the cars of a board 
+        Load the cars of a board
         """
         # Open datafile
         with open(datafile, 'r') as file:
@@ -37,21 +37,63 @@ class Board():
                    ][-1] = '.'  # creer poortje aangegeven met '.'
         return boarddummy
 
-    def load_board(self, y):
-        board = y
+    def load_board(self, empty_board):
+        self.board = empty_board
         for key, row in self.cars.items():  # loop door input dataframe
             posx = 7-self.cars[key].col
             posy = self.cars[key].row
-            board[posx][posy] = board[posx][posy].replace(
+
+            self.board[posx][posy] = self.board[posx][posy].replace(
                 '0', key)  # Vervang 0 met de relevante auto letter
+
             # check of de auto horizontaal of verticaal is georienteerd om te bepalen waar de volgende letter moet komen
             if self.cars[key].orientation == 'H':
-                board[posx][posy+1] = board[posx][posy+1].replace('0', key)
+                self.board[posx][posy +
+                                 1] = self.board[posx][posy+1].replace('0', key)
                 # check hoe groot de auto is om te bepalen of er nog een derde letter bij moet komen
                 if self.cars[key].length == 3:
-                    board[posx][posy+2] = board[posx][posy+2].replace('0', key)
+                    self.board[posx][posy +
+                                     2] = self.board[posx][posy+2].replace('0', key)
+
             if self.cars[key].orientation == 'V':
-                board[posx-1][posy] = board[posx-1][posy].replace('0', key)
+                self.board[posx-1][posy] = self.board[posx -
+                                                      1][posy].replace('0', key)
                 if self.cars[key].length == 3:
-                    board[posx-2][posy] = board[posx-2][posy].replace('0', key)
-        return board
+                    self.board[posx-2][posy] = self.board[posx -
+                                                          2][posy].replace('0', key)
+
+        return self.board
+
+    def move(self, car_key, blocks):
+
+        # moves the car along the number of blocks depending on orientation
+        if self.cars[car_key].orientation == "H":
+            cijfery = self.cars[car_key].row + blocks
+            cijferx = 7-self.cars[car_key].col
+            print(cijfery)
+            print(cijferx)
+            print(self.board[cijferx][cijfery])
+
+            if self.board[cijferx][cijfery] != "0":
+                return False
+            self.cars[car_key].row = cijfery
+            return True
+
+        elif self.cars[car_key].orientation == "V":
+
+            cijfery = self.cars[car_key].row
+            cijferx = 7-self.cars[car_key].col + blocks
+
+            print(cijfery)
+            print(cijferx)
+            if self.board[cijferx][cijfery] != 0:
+                return False
+            self.cars[car_key].col = cijferx
+            return True
+
+        else:
+            # in case there is an error in the loaded orientation
+            return False
+
+        self.cars[car_key].move_count += 1
+        self.cars[car_key].block_count += blocks
