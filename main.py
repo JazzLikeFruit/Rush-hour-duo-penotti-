@@ -1,6 +1,7 @@
 from code.classes import cars, board
 
 if __name__ == '__main__':
-    instance = board.Board("data/Rushhour6x6_1.csv")
-    print(instance.board)
-
+    datafile = "data/Rushhour6x6_1.csv"
+    instance = board.Board(datafile)
+    y = instance.create_board(datafile)
+    print(instance.load_board(y))
