@@ -114,7 +114,7 @@ traitlets==4.3.2
 traits==5.1.1
 traitsui==6.1.1
 typed-ast==1.4.1
-urllib3==1.23
+urllib3==1.24.2
 vincent==0.4.4
 vtk==8.1.2
 wcwidth==0.1.7
