@@ -9,6 +9,7 @@ class Car:
 
         self.position = {}
         self.move_count = 0
+        self.block_count = 0
 
     def is_red(self):
         # check if this car is the red car
@@ -19,10 +20,10 @@ class Car:
 
     def move(self, blocks):
         # moves the car along the number of blocks depending on orientation
-        if self.orientation == "H":
+        if self.orientation == "V":
             self.row = self.row + blocks
 
-        elif self.orientation == "V":
+        elif self.orientation == "H":
             self.col = self.col + blocks
 
         else:
@@ -30,6 +31,7 @@ class Car:
             return False
 
         self.move_count += 1
+        self.block_count += blocks
 
     def get_name(self):
         # returns the name of the car
@@ -44,3 +46,7 @@ class Car:
     def get_move_count(self):
         # returns the number of times a car has been moved
         return self.move_count
+
+    def get_block_count(self):
+        # returns the number of blocks a car has traveled
+        return self.block_count
