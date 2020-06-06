@@ -70,8 +70,8 @@ class Board():
         if self.cars[car_key].orientation == "H":
             cijfery = self.cars[car_key].row + blocks
             cijferx = 7-self.cars[car_key].col
-            print(cijfery)
-            print(cijferx)
+            #print(cijfery)
+            #print(cijferx)
             print(self.board[cijferx][cijfery])
 
             if self.board[cijferx][cijfery] != "0":
@@ -82,11 +82,11 @@ class Board():
         elif self.cars[car_key].orientation == "V":
 
             cijfery = self.cars[car_key].row
-            cijferx = 7-self.cars[car_key].col + blocks
+            cijferx = 7-(self.cars[car_key].col + blocks)
 
-            print(cijfery)
-            print(cijferx)
-            if self.board[cijferx][cijfery] != 0:
+            #print(cijfery)
+            #print(cijferx)
+            if self.board[cijferx][cijfery] != "0":
                 return False
             self.cars[car_key].col = cijferx
             return True
@@ -97,3 +97,12 @@ class Board():
 
         self.cars[car_key].move_count += 1
         self.cars[car_key].block_count += blocks
+
+    def check_space(self, car_key):
+        if self.cars[car_key].orientation == "H":
+            front = 5-self.cars[car_key].row
+            behind = -(self.cars[car_key].row) + 1 
+        elif self.cars[car_key].orientation == "V":
+            front = 5-self.cars[car_key].col
+            behind = -(self.cars[car_key].col) + 1
+        return range(behind,front)
