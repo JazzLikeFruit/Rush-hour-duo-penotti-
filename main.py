@@ -13,33 +13,31 @@ if __name__ == '__main__':
         #car = input("which car? ").upper()
         #block = input("how many blocks? ")
 
-        #randomcar = random.choice(list(cardic))
-        randomcar = "A"
+        # randomcar = random.choice(list(cardic))
         # print('Auto: ', randomcar, 'POS: ',
-        #       cardic[randomcar].row, cardic[randomcar].col)
+        #        "row", cardic[randomcar].row, "col", cardic[randomcar].col)
         # ruimte = instance.check_space(randomcar)
-        # print(ruimte)
-        # #print ('Ruimte: ', ruimte)
+        # print ('Ruimte: ', ruimte)
         # randommovement = random.choice(ruimte)
-        # print("Stap:", randommovement)
-        #print ('Verplaatsing: ', randommovement)
+        # print ('Verplaatsing: ', randommovement)
 
-        if instance.move(randomcar, -1) == True:
+        if instance.move("I", -2) == True:
             print('\n\nGELUKT!!\n\n')
-            print('OUDE COORDS:', cardic[randomcar].col, cardic[randomcar].row)
+            #print('OUDE COORDS:', cardic[randomcar].col, cardic[randomcar].row)
             # if cardic[randomcar].orientation == 'H':
             #    cardic[randomcar].row += randommovement
             # elif cardic[randomcar].orientation == 'V':
             #    cardic[randomcar].col += randommovement
-            print('NIEUWE COORDS: ',
-                  cardic[randomcar].col, cardic[randomcar].row)
+            # #print('NIEUWE COORDS: ',
+            #       cardic[randomcar].col, cardic[randomcar].row)
             empty_board = instance.create_board(datafile)
             print(instance.load_board(empty_board))
-            print(randomcar, cardic[randomcar].col, cardic[randomcar].row)
+            # print(randomcar, cardic[randomcar].col, cardic[randomcar].row)
             break
         else:
             print('\n\nerror!\n\n')
-            print(randomcar, cardic[randomcar].row, 7-cardic[randomcar].col)
+            # print(randomcar, cardic[randomcar].row, 7-cardic[randomcar].col)
         print('iteratie over')
         break
+
         # print(instance.load_board(empty2_board))

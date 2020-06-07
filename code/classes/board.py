@@ -26,13 +26,13 @@ class Board():
         # Creeer een array met nullen op basis van dimensie om vol te zetten met auto's
         boarddummy = np.zeros((dimension+2, dimension+2), int).astype(str)
 
-        boarddummy[0] = '|'  # eerste rij van muren voorzien
-        boarddummy[-1] = '|'  # laatste rij van muren voorzien
-
-        for x in boarddummy:
-            x[0] = '|'  # eerste kolom van muren voorzien
-            x[-1] = '|'  # laatste kolom van muren voorzien
-
+        for x in range(len(boarddummy[0])):
+            boarddummy[x][0] = str(7-x)
+            boarddummy[x][-1] = str(7-x)
+        for x in range(len(boarddummy[0])):
+            boarddummy[0][x] = '{}'.format(x)
+            boarddummy[-1][x] = '{}'.format(x)
+        boarddummy[0][0] = len(boarddummy)-1
         boarddummy[(len(boarddummy)-int(len(boarddummy)/2)-1)
                    ][-1] = '.'  # creer poortje aangegeven met '.'
         return boarddummy
@@ -68,7 +68,7 @@ class Board():
 
         # moves the car along the number of blocks depending on orientation
         if self.cars[car_key].orientation == "H":
-            vast_y = self.cars[car_key].col
+            vast_y = 7 - self.cars[car_key].col
             eind_x = self.cars[car_key].row + blocks
             start_x = self.cars[car_key].row
 
@@ -81,44 +81,50 @@ class Board():
                     print("Onze coords; ", x, vast_y)
                     print("col:", self.cars["B"].col,
                           "row:", self.cars["B"].row)
-                    if self.board[x][vast_y] != "0":
+                    print("Is dit gelijk aan 0?: ")
+                    print(self.board[vast_y][x])
+                    if self.board[vast_y][x] != "0":
                         return False
             else:
                 step = 1
-                for x in range(start_x+1, eind_x+1, step):
+                for x in range(start_x+2, eind_x+1, step):
                     print("start_x:", start_x+1, "eind_x:",
                           eind_x, "vast_y:", vast_y, "x:", x)
-                    print(self.board[x][vast_y])
-                    if self.board[x][vast_y] != "0":
+                    print("Is dit gelijk aan 0?: ")
+                    print(self.board[vast_y][x])
+                    if self.board[vast_y][x] != "0":
                         return False
 
-            self.cars[car_key].col = eind_x
+            self.cars[car_key].row = eind_x
             return True
 
         elif self.cars[car_key].orientation == "V":
             vast_x = self.cars[car_key].row
             begin_y = 7-self.cars[car_key].col
             eind_y = 7-self.cars[car_key].col + blocks
-
             if blocks < 0:
                 step = -1
-                for y in range(begin_y-1, eind_y+1, step):
+                for y in range(begin_y+2, eind_y+2, step):
+                    print(range(begin_y+2, eind_y+2, step))
                     print("begin_y:", begin_y, "eind_y:",
                           eind_y, "vast_x:", vast_x, "y:", y)
-                    print(self.board[vast_x][y])
-
-                    if self.board[vast_x][y] != "0":
+                    print("Is dit gelijk aan 0?: ")
+                    print(self.board[y][vast_x])
+                    if self.board[y][vast_x] != "0":
                         return False
+
             else:
                 step = 1
-                for y in range(begin_y+1, eind_y+1, step):
+                print(range(begin_y+2, eind_y+1, step))
+                for y in range(begin_y+2, eind_y, step):
                     print("begin_y:", begin_y, "eind_y:",
                           eind_y, "vast_x:", vast_x, "y:", y)
+                    print("Is dit gelijk aan 0?: ")
                     print(self.board[vast_x][y])
-                    if self.board[vast_x][y] != "0":
+                    if self.board[y][vast_x] != "0":
                         return False
-
-            self.cars[car_key].row = 7 - eind_y
+            self.cars[car_key].col = eind_y - 1
+            print('Y-output:', 7 - eind_y)
             return True
 
         else:
