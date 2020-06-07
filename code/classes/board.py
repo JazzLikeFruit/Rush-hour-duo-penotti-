@@ -68,27 +68,57 @@ class Board():
 
         # moves the car along the number of blocks depending on orientation
         if self.cars[car_key].orientation == "H":
-            cijfery = self.cars[car_key].row + blocks
-            cijferx = 7-self.cars[car_key].col
-            #print(cijfery)
-            #print(cijferx)
-            print(self.board[cijferx][cijfery])
+            vast_y = self.cars[car_key].col
+            eind_x = self.cars[car_key].row + blocks
+            start_x = self.cars[car_key].row
 
-            if self.board[cijferx][cijfery] != "0":
-                return False
-            self.cars[car_key].row = cijfery
+            if blocks < 0:
+                step = -1
+                for x in range(start_x-1, eind_x-1, step):
+                    print("startx:", start_x, "eind_x:",
+                          eind_x, "vast_y:", vast_y, "x:", x)
+                    print(self.board)
+                    print("Onze coords; ", x, vast_y)
+                    print("col:", self.cars["B"].col,
+                          "row:", self.cars["B"].row)
+                    if self.board[x][vast_y] != "0":
+                        return False
+            else:
+                step = 1
+                for x in range(start_x+1, eind_x+1, step):
+                    print("start_x:", start_x+1, "eind_x:",
+                          eind_x, "vast_y:", vast_y, "x:", x)
+                    print(self.board[x][vast_y])
+                    if self.board[x][vast_y] != "0":
+                        return False
+
+            self.cars[car_key].col = eind_x
             return True
 
         elif self.cars[car_key].orientation == "V":
+            vast_x = self.cars[car_key].row
+            begin_y = 7-self.cars[car_key].col
+            eind_y = 7-self.cars[car_key].col + blocks
 
-            cijfery = self.cars[car_key].row
-            cijferx = 7-(self.cars[car_key].col + blocks)
+            if blocks < 0:
+                step = -1
+                for y in range(begin_y-1, eind_y+1, step):
+                    print("begin_y:", begin_y, "eind_y:",
+                          eind_y, "vast_x:", vast_x, "y:", y)
+                    print(self.board[vast_x][y])
 
-            #print(cijfery)
-            #print(cijferx)
-            if self.board[cijferx][cijfery] != "0":
-                return False
-            self.cars[car_key].col = cijferx
+                    if self.board[vast_x][y] != "0":
+                        return False
+            else:
+                step = 1
+                for y in range(begin_y+1, eind_y+1, step):
+                    print("begin_y:", begin_y, "eind_y:",
+                          eind_y, "vast_x:", vast_x, "y:", y)
+                    print(self.board[vast_x][y])
+                    if self.board[vast_x][y] != "0":
+                        return False
+
+            self.cars[car_key].row = 7 - eind_y
             return True
 
         else:
@@ -101,8 +131,10 @@ class Board():
     def check_space(self, car_key):
         if self.cars[car_key].orientation == "H":
             front = 5-self.cars[car_key].row
-            behind = -(self.cars[car_key].row) + 1 
+            behind = -(self.cars[car_key].row) + 1
         elif self.cars[car_key].orientation == "V":
             front = 5-self.cars[car_key].col
             behind = -(self.cars[car_key].col) + 1
-        return range(behind,front)
+        output = [x for x in range(behind, front) if x != 0]
+
+        return output
