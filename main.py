@@ -28,6 +28,7 @@ if __name__ == '__main__':
             elif cardic[randomcar].orientation == 'V':
                 cardic[randomcar].col += randommovement
             print('NIEUWE COORDS: ', cardic[randomcar].col, cardic[randomcar].row)
+            empty_board=instance.create_board(datafile)
             print (instance.load_board(empty_board))
             print (randomcar, cardic[randomcar].col, cardic[randomcar].row)
             break
