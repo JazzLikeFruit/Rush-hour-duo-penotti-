@@ -154,3 +154,19 @@ class Board():
             return True
         else:
             return False
+
+    def car_output(self):
+        # generates informative output after a game is finished
+        with open('output.csv', 'w', newline='') as output:
+            writer = csv.writer(output)
+            writer.writerow(["car", "move", "blocks"])
+
+            for key in self.cars:
+                #print(f"key = {key} moves: {self.cars[key].move_count} blocks: {self.cars[key].block_count}")
+                car = key
+                move = self.cars[key].move_count
+                blocks = self.cars[key].block_count
+
+                writer.writerow([car, move, blocks])
+            
+

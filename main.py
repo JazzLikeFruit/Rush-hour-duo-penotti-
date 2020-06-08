@@ -33,15 +33,14 @@ if __name__ == '__main__':
             empty_board = instance.create_board(datafile)
             print(instance.load_board(empty_board))
             # print(randomcar, cardic[randomcar].col, cardic[randomcar].row)
-<<<<<<< HEAD
             if instance.check_win() == True:
                 print("win = true!")
             else:
                 print("win = false :(")
+
+            instance.car_output()
+            print("finit")
             break
-=======
-            
->>>>>>> 38783ca6a144040aec94fa58deb5cb406658e14e
         else:
             print('\n\nerror!\n\n')
             # print(randomcar, cardic[randomcar].row, 7-cardic[randomcar].col)
@@ -49,3 +48,4 @@ if __name__ == '__main__':
         break
 
         # print(instance.load_board(empty2_board))
+        
