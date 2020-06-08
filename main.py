@@ -1,5 +1,6 @@
 from code.classes import cars, board
 from numpy import random
+import csv
 
 if __name__ == '__main__':
     datafile = "data/Rushhour6x6_1.csv"
@@ -25,7 +26,7 @@ if __name__ == '__main__':
         randommovement = random.choice(ruimte)
         # print('Verplaatsing: ', randommovement)
 
-        if instance.move(randomcar, randommovement) == True:
+        if instance.move(randomcar, randommovement):
             movements += 1
             # print('\n\nGELUKT!!\n\n')
             # print('OUDE COORDS:', cardic[randomcar].col, cardic[randomcar].row)
@@ -40,7 +41,10 @@ if __name__ == '__main__':
                 times += 1
                 records.append(movements)
     records.sort()
-    print(records)
+
+    with open("results.csv", "a") as file:
+        record = csv.writer(file, dialect="excel")
+        record.writerow(records)
 
     # if instance.check_win() == True:
     #     print("win = true!")
