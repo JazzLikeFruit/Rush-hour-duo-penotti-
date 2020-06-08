@@ -8,9 +8,11 @@ if __name__ == '__main__':
     cardic = instance.load_cars(datafile)
     start = instance.load_board(empty_board)
     movements = 0
+    times = 0
+    records = []
     print(start)
     print()
-    while True:
+    while times < 10:
 
         # car = input("which car? ").upper()
         # block = input("how many blocks? ")
@@ -35,23 +37,23 @@ if __name__ == '__main__':
 
             # print(randomcar, cardic[randomcar].col, cardic[randomcar].row)
             if randomcar == "X" and instance.cars[randomcar].row == 5:
-                empty_board = instance.create_board(datafile)
-                print(instance.load_board(empty_board))
-                print(movements)
-                break
+                times += 1
+                records.append(movements)
+    records.sort()
+    print(records)
 
-            # if instance.check_win() == True:
-            #     print("win = true!")
-            # else:
-            #     print("win = false :(")
+    # if instance.check_win() == True:
+    #     print("win = true!")
+    # else:
+    #     print("win = false :(")
 
-            # instance.car_output()
-            # print("finit")
-            # break
+    # instance.car_output()
+    # print("finit")
+    # break
 
-        # else:
-        # print('\n\nerror!\n\n')
-        # print(randomcar, cardic[randomcar].row, cardic[randomcar].col)
-        # print('iteratie over')
+    # else:
+    # print('\n\nerror!\n\n')
+    # print(randomcar, cardic[randomcar].row, cardic[randomcar].col)
+    # print('iteratie over')
 
-        # print(instance.load_board(empty2_board))
+    # print(instance.load_board(empty2_board))
