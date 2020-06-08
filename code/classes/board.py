@@ -22,9 +22,9 @@ class Board():
 
     def create_board(self, source_file):
         # definieer dimensie op basis van bestandsnaam
-        dimension = int(source_file[-7])
+        self.dimension = int(source_file[-7])
         # Creeer een array met nullen op basis van dimensie om vol te zetten met auto's
-        boarddummy = np.zeros((dimension+2, dimension+2), int).astype(str)
+        boarddummy = np.zeros((self.dimension+2, self.dimension+2), int).astype(str)
 
         for x in range(len(boarddummy[0])):
             boarddummy[x][0] = str(x)
@@ -105,6 +105,9 @@ class Board():
                         return False
 
             self.cars[car_key].row = end_x
+            # self.cars[car_key].row = eind_x
+            # self.cars[car_key].move_count += 1
+            # self.cars[car_key].block_count += blocks
             return True
 
         elif self.cars[car_key].orientation == "V":
@@ -144,14 +147,15 @@ class Board():
                         return False
 
             self.cars[car_key].col = eind_x
+            # Code nina
+            # self.cars[car_key].col = eind_y - 1
+            # print('Y-output:', 7 - eind_y)
+            
+            # self.cars[car_key].move_count += 1
+            # self.cars[car_key].block_count += blocks
             return True
 
-        else:
-            # in case there is an error in the loaded orientation
-            return False
-
-        self.cars[car_key].move_count += 1
-        self.cars[car_key].block_count += blocks
+        return False
 
     def check_space(self, car_key):
         if self.cars[car_key].orientation == "H":
@@ -165,3 +169,28 @@ class Board():
             behind = -(self.cars[car_key].col)+2
             output = [-(x) for x in range(behind, front) if x != 0]
             return (output)
+
+
+    # def check_win(self):
+    #     # checks if the game is finished by determining the winning position and the position of car X
+    #     car_location = self.cars["X"].get_position()
+    #     win_location = self.dimension - 1
+
+    #     if car_location["col"] == win_location:
+    #         return True
+    #     else:
+    #         return False
+
+    # def car_output(self):
+    #     # generates informative output after a game is finished
+    #     with open('output.csv', 'w', newline='') as output:
+    #         writer = csv.writer(output)
+    #         writer.writerow(["car", "move", "blocks"])
+
+    #         for key in self.cars:
+    #             #print(f"key = {key} moves: {self.cars[key].move_count} blocks: {self.cars[key].block_count}")
+    #             car = key
+    #             move = self.cars[key].move_count
+    #             blocks = self.cars[key].block_count
+
+    #             writer.writerow([car, move, blocks])

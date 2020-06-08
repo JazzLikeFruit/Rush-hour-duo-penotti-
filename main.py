@@ -39,9 +39,19 @@ if __name__ == '__main__':
                 print(instance.load_board(empty_board))
                 print(movements)
                 break
+
+            # if instance.check_win() == True:
+            #     print("win = true!")
+            # else:
+            #     print("win = false :(")
+
+            # instance.car_output()
+            # print("finit")
+            # break
+
         # else:
-            # print('\n\nerror!\n\n')
-            # print(randomcar, cardic[randomcar].row, cardic[randomcar].col)
+        # print('\n\nerror!\n\n')
+        # print(randomcar, cardic[randomcar].row, cardic[randomcar].col)
         # print('iteratie over')
 
         # print(instance.load_board(empty2_board))
