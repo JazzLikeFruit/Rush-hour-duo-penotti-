@@ -21,7 +21,7 @@ if __name__ == '__main__':
         # randommovement = random.choice(ruimte)
         # print ('Verplaatsing: ', randommovement)
 
-        if instance.move("I", -2) == True:
+        if instance.move("C", -1) == True:
             print('\n\nGELUKT!!\n\n')
             #print('OUDE COORDS:', cardic[randomcar].col, cardic[randomcar].row)
             # if cardic[randomcar].orientation == 'H':
@@ -33,11 +33,15 @@ if __name__ == '__main__':
             empty_board = instance.create_board(datafile)
             print(instance.load_board(empty_board))
             # print(randomcar, cardic[randomcar].col, cardic[randomcar].row)
+<<<<<<< HEAD
             if instance.check_win() == True:
                 print("win = true!")
             else:
                 print("win = false :(")
             break
+=======
+            
+>>>>>>> 38783ca6a144040aec94fa58deb5cb406658e14e
         else:
             print('\n\nerror!\n\n')
             # print(randomcar, cardic[randomcar].row, 7-cardic[randomcar].col)
