@@ -33,6 +33,10 @@ if __name__ == '__main__':
             empty_board = instance.create_board(datafile)
             print(instance.load_board(empty_board))
             # print(randomcar, cardic[randomcar].col, cardic[randomcar].row)
+            if instance.check_win() == True:
+                print("win = true!")
+            else:
+                print("win = false :(")
             break
         else:
             print('\n\nerror!\n\n')

@@ -23,8 +23,8 @@ class Car:
 
     def get_position(self):
         # returns position of car on the board
-        self.position["row"] = self.row
-        self.position["col"] = self.col
+        self.position["row"] = self.col
+        self.position["col"] = self.row # switched up to match the board
         return self.position
 
     def get_move_count(self):
