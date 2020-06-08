@@ -17,7 +17,7 @@ class Board():
             reader = csv.DictReader(file)
             for row in reader:
                 cars[row['car']] = Car(
-                    row['orientation'], row['row'], row['col'], row['length'])  # Functie om het dummy bord op basis van de input van auto's te voorzien
+                    row['orientation'], row['row'], 7 - int(row['col']), row['length'])  # Functie om het dummy bord op basis van de input van auto's te voorzien
         return cars
 
     def create_board(self, source_file):
@@ -27,8 +27,8 @@ class Board():
         boarddummy = np.zeros((dimension+2, dimension+2), int).astype(str)
 
         for x in range(len(boarddummy[0])):
-            boarddummy[x][0] = str(7-x)
-            boarddummy[x][-1] = str(7-x)
+            boarddummy[x][0] = str(x)
+            boarddummy[x][-1] = str(x)
         for x in range(len(boarddummy[0])):
             boarddummy[0][x] = '{}'.format(x)
             boarddummy[-1][x] = '{}'.format(x)
@@ -40,7 +40,7 @@ class Board():
     def load_board(self, empty_board):
         self.board = empty_board
         for key, row in self.cars.items():  # loop door input dataframe
-            posx = 7-self.cars[key].col
+            posx = self.cars[key].col
             posy = self.cars[key].row
 
             self.board[posx][posy] = self.board[posx][posy].replace(
@@ -65,66 +65,85 @@ class Board():
         return self.board
 
     def move(self, car_key, blocks):
+        step = 1
 
         # moves the car along the number of blocks depending on orientation
         if self.cars[car_key].orientation == "H":
-            vast_y = 7 - self.cars[car_key].col
-            eind_x = self.cars[car_key].row + blocks
+            vast_y = self.cars[car_key].col
+            end_x = self.cars[car_key].row + blocks
             start_x = self.cars[car_key].row
 
             if blocks < 0:
-                step = -1
-                for x in range(start_x-1, eind_x-1, step):
-                    print("startx:", start_x, "eind_x:",
-                          eind_x, "vast_y:", vast_y, "x:", x)
-                    print(self.board)
-                    print("Onze coords; ", x, vast_y)
-                    print("col:", self.cars["B"].col,
-                          "row:", self.cars["B"].row)
-                    print("Is dit gelijk aan 0?: ")
-                    print(self.board[vast_y][x])
+
+                for x in range(start_x-1, end_x-1, -step):
+                    # print(range(start_x-1, end_x-1, -step))
+                    # print("startx:", start_x, "end_x:",
+                    #       end_x, "vast_y:", vast_y, "x:", x)
+                    # print("Onze coords; ", x, vast_y)
+                    # print("col:", self.cars["B"].col,
+                    #       "row:", self.cars["B"].row)
+                    # print("Is dit gelijk aan 0?: ")
+                    # print(self.board[vast_y][x])
                     if self.board[vast_y][x] != "0":
                         return False
             else:
-                step = 1
-                for x in range(start_x+2, eind_x+1, step):
-                    print("start_x:", start_x+1, "eind_x:",
-                          eind_x, "vast_y:", vast_y, "x:", x)
-                    print("Is dit gelijk aan 0?: ")
-                    print(self.board[vast_y][x])
+
+                start = start_x+2
+                end = end_x+2
+
+                if self.cars[car_key].length == 3:
+                    start += 1
+                    end += 1
+
+                for x in range(start, end, step):
+                    # print(range(start, end, step))
+                    # print("start_x:", start, "end_x:",
+                    #       end, "vast_y:", vast_y, "x:", x)
+                    # print("Is dit gelijk aan 0?: ")
+                    # print(self.board[vast_y][x])
                     if self.board[vast_y][x] != "0":
                         return False
 
-            self.cars[car_key].row = eind_x
+            self.cars[car_key].row = end_x
             return True
 
         elif self.cars[car_key].orientation == "V":
-            vast_x = self.cars[car_key].row
-            begin_y = 7-self.cars[car_key].col
-            eind_y = 7-self.cars[car_key].col + blocks
+            vast_y = self.cars[car_key].row
+            begin_x = self.cars[car_key].col
+            eind_x = self.cars[car_key].col - blocks
+
             if blocks < 0:
-                step = -1
-                for y in range(begin_y+2, eind_y+2, step):
-                    print(range(begin_y+2, eind_y+2, step))
-                    print("begin_y:", begin_y, "eind_y:",
-                          eind_y, "vast_x:", vast_x, "y:", y)
-                    print("Is dit gelijk aan 0?: ")
-                    print(self.board[y][vast_x])
-                    if self.board[y][vast_x] != "0":
+                eind_x = self.cars[car_key].col + -(blocks)
+                start = begin_x
+                end = eind_x
+
+                if self.cars[car_key].length == 3:
+                    start += 1
+                    end += 1
+                # print(range(start+1, end, step))
+                for y in range(start+1, end+1, step):
+
+                    # print("start:", start, "end:",
+                    #       end, "vast_x:", vast_y, "y:", y)
+                    # print(self.board[y][vast_y])
+                    # print("positie:", self.board[y][vast_y])
+                    if self.board[y][vast_y] != "0":
                         return False
 
             else:
-                step = 1
-                print(range(begin_y+2, eind_y+1, step))
-                for y in range(begin_y+2, eind_y, step):
-                    print("begin_y:", begin_y, "eind_y:",
-                          eind_y, "vast_x:", vast_x, "y:", y)
-                    print("Is dit gelijk aan 0?: ")
-                    print(self.board[vast_x][y])
-                    if self.board[y][vast_x] != "0":
+                # print(range(begin_x-2, eind_x-2, step))
+                for y in range(begin_x-2, eind_x-2, -step):
+
+                    # print("begin_x:", begin_x, "eind_x:",
+                    #       eind_x, "vast_y:", vast_y, "y:", y)
+                    # print("Is dit gelijk aan 0?: ")
+                    # print(self.board[vast_y][y])
+                    # print(self.board[y][vast_y])
+                    # print("positie:", self.board[y][vast_y])
+                    if self.board[y][vast_y] != "0":
                         return False
-            self.cars[car_key].col = eind_y - 1
-            print('Y-output:', 7 - eind_y)
+
+            self.cars[car_key].col = eind_x
             return True
 
         else:
@@ -136,11 +155,13 @@ class Board():
 
     def check_space(self, car_key):
         if self.cars[car_key].orientation == "H":
-            front = 5-self.cars[car_key].row
+            front = 6-self.cars[car_key].row
             behind = -(self.cars[car_key].row) + 1
-        elif self.cars[car_key].orientation == "V":
-            front = 5-self.cars[car_key].col
-            behind = -(self.cars[car_key].col) + 1
-        output = [x for x in range(behind, front) if x != 0]
+            output = [x for x in range(behind, front) if x != 0]
+            return output
 
-        return output
+        elif self.cars[car_key].orientation == "V":
+            front = 7-self.cars[car_key].col
+            behind = -(self.cars[car_key].col)+2
+            output = [-(x) for x in range(behind, front) if x != 0]
+            return (output)
