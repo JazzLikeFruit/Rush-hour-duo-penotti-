@@ -10,8 +10,8 @@ if __name__ == '__main__':
     movements = 0
     records = []
     print(instance.load_board(empty_board))
-
-    while times < 1:
+    times=0
+    while times < 15:
 
         # Kiest random car uit lijst met cars
         randomcar = random.choice(list(cardic))
@@ -35,7 +35,9 @@ if __name__ == '__main__':
             empty_board = instance.create_board(datafile)
           
             instance.load_board(empty_board)
-
+            instance.save_board(movements)
+            print(instance.save_board(movements))
+            
             # if movements > 500 and instance.cars["X"].row != 5:
             #     movements = 0
             #     instance = board.Board(datafile)
@@ -43,7 +45,7 @@ if __name__ == '__main__':
             #     cardic = instance.load_cars(datafile)
             #     instance.load_board(empty_board)
             # 
-
+            times+=1
 
         if instance.cars["X"].row == 5 or instance.move("X", 5-instance.cars["X"].row):
             times += 1

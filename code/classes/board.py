@@ -11,6 +11,7 @@ class Board():
 
     def __init__(self, source_file):
         self.cars = self.load_cars(source_file)
+        self.version = {}
 
     def load_cars(self, datafile):
         # load cars dictionary from datafile input
@@ -178,4 +179,12 @@ class Board():
                 if self.cars[key].block_count != 0:
                     writer.writerow([car, move])
 
-                    
+    
+    def save_board(self, movements):
+            # saves the board with current configuration in a dictionary
+            key = movements
+            current_board = self.board
+            self.version[key] = current_board
+
+            return self.version
+
