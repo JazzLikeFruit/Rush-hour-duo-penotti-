@@ -14,16 +14,6 @@ class Car:
         self.move_count = 0
         self.block_count = 0
 
-    # def is_red(self):
-        # check if this car is the red car
-        # if self.name == "X":
-        # return True
-        # else:
-        # return False
-
-    # def get_name(self):
-        # returns the name of the car
-        # return self.name
 
     def get_position(self):
         # returns position of car on the board

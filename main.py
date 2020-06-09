@@ -8,11 +8,10 @@ if __name__ == '__main__':
     empty_board = instance.create_board(datafile)
     cardic = instance.load_cars(datafile)
     movements = 0
-    times = 0
     records = []
     print(instance.load_board(empty_board))
 
-    while times < 2:
+    while times < 1:
 
         # Kiest random car uit lijst met cars
         randomcar = random.choice(list(cardic))
@@ -23,47 +22,42 @@ if __name__ == '__main__':
         # Kiest een movement uit die reeks
         randommovement = random.choice(ruimte)
 
-        # Check als movement valid is
-        if instance.move(randomcar, randommovement):
+        # if instance.move("X", 1):
+        #     empty_board = instance.create_board(datafile)
+        #     instance.load_board(empty_board)
 
+        # Check of movement valid is
+        if instance.move(randomcar, randommovement):
             movements += 1
+            randommovement
             # print('\n\nGELUKT!!\n\n')
 
             empty_board = instance.create_board(datafile)
-            # print(instance.load_board(empty_board))
+          
             instance.load_board(empty_board)
 
-            if instance.cars["X"].row == 5:
-                times += 1
-                print()
-                print("Oplossingen:")
-                print(instance.load_board(empty_board))
-                # records.append(movements)
-                print(movements)
+            # if movements > 500 and instance.cars["X"].row != 5:
+            #     movements = 0
+            #     instance = board.Board(datafile)
+            #     empty_board = instance.create_board(datafile)
+            #     cardic = instance.load_cars(datafile)
+            #     instance.load_board(empty_board)
+            # 
 
-                # Reload board
-                movements = 0
-                instance = board.Board(datafile)
-                empty_board = instance.create_board(datafile)
-                cardic = instance.load_cars(datafile)
-                print(instance.load_board(empty_board))
 
-    # records.sort()
+        if instance.cars["X"].row == 5 or instance.move("X", 5-instance.cars["X"].row):
+            times += 1
 
-    # with open("results.csv", "a") as file:
-    #     record = csv.writer(file, dialect="excel")
-    #     record.writerow(records)
+            empty_board = instance.create_board(datafile)
+            print(instance.load_board(empty_board))
+            instance.car_output()
+            print()
 
-    # if instance.check_win() == True:
-    #     print("win = true!")
-    # else:
-    #     print("win = false :(")
+            # records.append(movements)
 
-    # instance.car_output()
-    # print("finit")
-    # break
-
-    # else:
-    # print('\n\nerror!\n\n')
-    # print(randomcar, cardic[randomcar].row, cardic[randomcar].col)
-    # print('iteratie over')
+            # Reload board
+            # movements = 0
+            # instance = board.Board(datafile)
+            # empty_board = instance.create_board(datafile)
+            # cardic = instance.load_cars(datafile)
+            # instance.load_board(empty_board)
