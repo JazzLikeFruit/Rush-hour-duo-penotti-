@@ -7,7 +7,6 @@ class Board():
     def __init__(self, source_file):
         self.cars = self.load_cars(source_file)
 
-        
     def load_cars(self, datafile):
         """
         Load the cars of a board
@@ -149,7 +148,7 @@ class Board():
                         return False
 
             self.cars[car_key].col = eind_x
-            # Code nina
+
             # self.cars[car_key].col = eind_y - 1
             # print('Y-output:', 7 - eind_y)
 
@@ -172,24 +171,26 @@ class Board():
             output = [-(x) for x in range(behind, front) if x != 0]
             return (output)
 
-    def check_win(self):
-        # checks if the game is finished by determining the winning position and the position of car X
-        car_location = self.cars["X"].get_position()
-        win_location = self.dimension - 1
+    # def check_win(self):
+    #     # checks if the game is finished by determining the winning position and the position of car X
+    #     car_location = self.cars["X"].get_position()
+    #     win_location = self.dimension - 1
 
-        if car_location["col"] == win_location:
-            return True
-        else:
-            return False
+    #     if car_location["col"] == win_location:
+    #         return True
+    #     else:
+    #         return False
 
-    def car_output(self):
-            # generates informative output after a game is finished
-            with open('output.csv', 'w', newline='') as output:
-                writer = csv.writer(output)
-                writer.writerow(["car", "move"])
+    # def car_output(self):
+    #     # generates informative output after a game is finished
+    #     with open('output.csv', 'w', newline='') as output:
+    #         writer = csv.writer(output)
+    #         writer.writerow(["car", "move", "blocks"])
 
-                for key in self.cars:
-                    car = key
-                    move = self.cars[key].block_count
+    #         for key in self.cars:
+    #             #print(f"key = {key} moves: {self.cars[key].move_count} blocks: {self.cars[key].block_count}")
+    #             car = key
+    #             move = self.cars[key].move_count
+    #             blocks = self.cars[key].block_count
 
-                    writer.writerow([car, move])
+    #             writer.writerow([car, move, blocks])

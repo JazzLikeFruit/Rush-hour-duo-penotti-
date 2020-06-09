@@ -7,11 +7,10 @@ if __name__ == '__main__':
     instance = board.Board(datafile)
     empty_board = instance.create_board(datafile)
     cardic = instance.load_cars(datafile)
-    start = instance.load_board(empty_board)
     movements = 0
     times = 0
     records = []
-    print(start)
+    print(instance.load_board(empty_board))
 
     while times < 2:
 
@@ -41,7 +40,13 @@ if __name__ == '__main__':
                 print(instance.load_board(empty_board))
                 # records.append(movements)
                 print(movements)
+
+                # Reload board
                 movements = 0
+                instance = board.Board(datafile)
+                empty_board = instance.create_board(datafile)
+                cardic = instance.load_cars(datafile)
+                print(instance.load_board(empty_board))
 
     # records.sort()
 
