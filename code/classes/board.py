@@ -7,6 +7,7 @@ class Board():
     def __init__(self, source_file):
         self.cars = self.load_cars(source_file)
 
+        
     def load_cars(self, datafile):
         """
         Load the cars of a board
