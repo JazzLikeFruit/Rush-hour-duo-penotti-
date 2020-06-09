@@ -12,7 +12,7 @@ if __name__ == '__main__':
     times = 0
     records = []
     print(start)
-    print()
+    print("Oplossingen:")
     while times < 10:
 
         # car = input("which car? ").upper()
@@ -35,10 +35,11 @@ if __name__ == '__main__':
             #       cardic[randomcar].col, cardic[randomcar].row)
             empty_board = instance.create_board(datafile)
             instance.load_board(empty_board)
-
             # print(randomcar, cardic[randomcar].col, cardic[randomcar].row)
             if randomcar == "X" and instance.cars[randomcar].row == 5:
                 times += 1
+                print()
+                print(instance.load_board(empty_board))
                 records.append(movements)
     records.sort()
 
