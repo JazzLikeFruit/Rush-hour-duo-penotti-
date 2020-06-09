@@ -1,4 +1,8 @@
 class Car:
+    """
+    Creates Car objects used to fill the board of the game Rush Hour
+    """
+
     def __init__(self, orientation, row, col, length):
         # initialise car class
         self.orientation = orientation

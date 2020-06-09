@@ -4,54 +4,64 @@ from .cars import Car
 
 
 class Board():
+    """
+    Creates a board filled with cars and other functionalities to implement the game Rush Hour
+    """
+
     def __init__(self, source_file):
         self.cars = self.load_cars(source_file)
 
     def load_cars(self, datafile):
-        """
-        Load the cars of a board
-        """
-        # Open datafile
+        # load cars dictionary from datafile input
         with open(datafile, 'r') as file:
             cars = {}
             reader = csv.DictReader(file)
+
+            # loop through input file to add cars to dictionary
             for row in reader:
                 cars[row['car']] = Car(
                     row['orientation'], row['row'], 7 - int(row['col']), row['length'])  # Functie om het dummy bord op basis van de input van auto's te voorzien
         return cars
 
     def create_board(self, source_file):
-        # definieer dimensie op basis van bestandsnaam
-        self.dimension = int(source_file[-7])
-        # Creeer een array met nullen op basis van dimensie om vol te zetten met auto's
+        # define dimension based on name source file
+        self.dimension = int(source_file[-7]) # dit zou naar __init__ moeten maar dan is er een attribute error
+        
+        # creates board as an array filled with 0s based on dimension
         boarddummy = np.zeros(
             (self.dimension+2, self.dimension+2), int).astype(str)
 
         for x in range(len(boarddummy[0])):
             boarddummy[x][0] = str(x)
             boarddummy[x][-1] = str(x)
-        for x in range(len(boarddummy[0])):
+
+        for x in range(len(boarddummy[0])): # zou dit geen y moeten zijn?
             boarddummy[0][x] = '{}'.format(x)
             boarddummy[-1][x] = '{}'.format(x)
+
         boarddummy[0][0] = len(boarddummy)-1
         boarddummy[(len(boarddummy)-int(len(boarddummy)/2)-1)
-                   ][-1] = '.'  # creer poortje aangegeven met '.'
+                   ][-1] = '.'  # creates board exit with '.'
         return boarddummy
 
     def load_board(self, empty_board):
         self.board = empty_board
-        for key, row in self.cars.items():  # loop door input dataframe
+
+        # loop through cars dictionary to fill board
+        for key, row in self.cars.items():
             posx = self.cars[key].col
             posy = self.cars[key].row
 
+            # replace 0s on board with car name chars
             self.board[posx][posy] = self.board[posx][posy].replace(
-                '0', key)  # Vervang 0 met de relevante auto letter
+                '0', key)
 
-            # check of de auto horizontaal of verticaal is georienteerd om te bepalen waar de volgende letter moet komen
+            # determine car orientation to place car correctly on the board
             if self.cars[key].orientation == 'H':
                 self.board[posx][posy +
                                  1] = self.board[posx][posy+1].replace('0', key)
-                # check hoe groot de auto is om te bepalen of er nog een derde letter bij moet komen
+
+                # determine car size and add a block if the car length = 3
                 if self.cars[key].length == 3:
                     self.board[posx][posy +
                                      2] = self.board[posx][posy+2].replace('0', key)
@@ -74,6 +84,7 @@ class Board():
             end_x = self.cars[car_key].row + blocks
             start_x = self.cars[car_key].row
 
+            # determine if the car moves in positive or negative direction
             if blocks < 0:
 
                 for x in range(start_x-1, end_x-1, -step):
@@ -89,8 +100,8 @@ class Board():
                         return False
             else:
 
-                start = start_x+2
-                end = end_x+2
+                start = start_x + 2
+                end = end_x + 2
 
                 if self.cars[car_key].length == 3:
                     start += 1
@@ -159,6 +170,7 @@ class Board():
         return False
 
     def check_space(self, car_key):
+        # check which spaces are available to move in around the car
         if self.cars[car_key].orientation == "H":
             front = 6-self.cars[car_key].row
             behind = -(self.cars[car_key].row) + 1
@@ -169,28 +181,27 @@ class Board():
             front = 7-self.cars[car_key].col
             behind = -(self.cars[car_key].col)+2
             output = [-(x) for x in range(behind, front) if x != 0]
-            return (output)
+            return output
 
-    # def check_win(self):
-    #     # checks if the game is finished by determining the winning position and the position of car X
-    #     car_location = self.cars["X"].get_position()
-    #     win_location = self.dimension - 1
+    def check_win(self):
+        # checks if the game is finished by determining the winning position and the position of car X
+        car_location = self.cars["X"].get_position()
+        win_location = self.dimension - 1
 
-    #     if car_location["col"] == win_location:
-    #         return True
-    #     else:
-    #         return False
+        # check if car X is placed in winning position
+        if car_location["col"] == win_location:
+            return True
+        else:
+            return False
 
-    # def car_output(self):
-    #     # generates informative output after a game is finished
-    #     with open('output.csv', 'w', newline='') as output:
-    #         writer = csv.writer(output)
-    #         writer.writerow(["car", "move", "blocks"])
+    def car_output(self):
+            # generates output for check50 after a game is finished
+            with open('output.csv', 'w', newline='') as output:
+                writer = csv.writer(output)
+                writer.writerow(["car", "move"])
 
-    #         for key in self.cars:
-    #             #print(f"key = {key} moves: {self.cars[key].move_count} blocks: {self.cars[key].block_count}")
-    #             car = key
-    #             move = self.cars[key].move_count
-    #             blocks = self.cars[key].block_count
+                for key in self.cars:
+                    car = key
+                    move = self.cars[key].block_count
 
-    #             writer.writerow([car, move, blocks])
+                    writer.writerow([car, move])
