@@ -1,0 +1,3 @@
+# Python Tools for Visual Studio (PTVS) (from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore)
+__pycache__/
+*.pyc
