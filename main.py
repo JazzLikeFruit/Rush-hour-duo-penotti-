@@ -5,7 +5,7 @@ import csv
 if __name__ == '__main__':
     datafile = "data/Rushhour6x6_1.csv"
     instance = board.Board(datafile)
-    empty_board = instance.create_board(datafile)
+    empty_board = instance.create_board()
     cardic = instance.load_cars(datafile)
     movements = 0
     records = []
@@ -32,16 +32,16 @@ if __name__ == '__main__':
             randommovement
             # print('\n\nGELUKT!!\n\n')
 
-            empty_board = instance.create_board(datafile)
+            empty_board = instance.create_board()
           
             instance.load_board(empty_board)
             instance.save_board(movements)
-            print(instance.save_board(movements))
+            #print(instance.save_board(movements))
             
             # if movements > 500 and instance.cars["X"].row != 5:
             #     movements = 0
             #     instance = board.Board(datafile)
-            #     empty_board = instance.create_board(datafile)
+            #     empty_board = instance.create_board()
             #     cardic = instance.load_cars(datafile)
             #     instance.load_board(empty_board)
             # 

@@ -13,6 +13,9 @@ class Board():
         self.cars = self.load_cars(source_file)
         self.version = {}
 
+        # define dimension based on name source file
+        self.dimension = int(re.search("\d+", source_file)[0])
+
     def load_cars(self, datafile):
         # load cars dictionary from datafile input
         with open(datafile, 'r') as file:
@@ -25,12 +28,7 @@ class Board():
                     row['orientation'], row['row'], 7 - int(row['col']), row['length'])  # Functie om het dummy bord op basis van de input van auto's te voorzien
         return cars
 
-    def create_board(self, source_file):
-
-        # dit zou naar __init__ moeten maar dan is er een attribute error
-        # define dimension based on name source file
-        self.dimension = int(re.search("\d+", source_file)[0])
-
+    def create_board(self):
         # creates board as an array filled with 0s based on dimension
         boarddummy = np.zeros(
             (self.dimension + 2, self.dimension + 2), int).astype(str)
@@ -181,10 +179,10 @@ class Board():
 
     
     def save_board(self, movements):
-            # saves the board with current configuration in a dictionary
+            # saves car coordinates of current move in a dictionary
             key = movements
-            current_board = self.board
-            self.version[key] = current_board
+            current_cars = self.cars
+            self.version[key] = current_cars
 
             return self.version
 
