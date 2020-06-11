@@ -21,6 +21,8 @@ class Board():
 
     def load_cars(self, datafile):
         # load cars dictionary from datafile input
+        number = int(re.search("\d+", datafile)[0]) + 1
+
         with open(datafile, 'r') as file:
             cars = {}
             reader = csv.DictReader(file)
@@ -28,7 +30,7 @@ class Board():
             # loop through input file to add cars to dictionary
             for row in reader:
                 cars[row['car']] = Car(
-                    row['orientation'], row['row'], 7 - int(row['col']), row['length'])  # Functie om het dummy bord op basis van de input van auto's te voorzien
+                    row['orientation'], row['row'],  (number - int(row['col'])), row['length'])  # Functie om het dummy bord op basis van de input van auto's te voorzien
         return cars
 
     def create_board(self):
@@ -145,13 +147,13 @@ class Board():
     def check_space(self, car_key):
         # check which spaces are available to move in around the car
         if self.cars[car_key].orientation == "H":
-            front = 6-self.cars[car_key].row
+            front = self.dimension - self.cars[car_key].row
             behind = -(self.cars[car_key].row) + 1
             output = [x for x in range(behind, front) if x != 0]
             return output
 
         elif self.cars[car_key].orientation == "V":
-            front = 7-self.cars[car_key].col
+            front = (self.dimension + 1)-self.cars[car_key].col
             behind = -(self.cars[car_key].col)+2
             output = [-(x) for x in range(behind, front) if x != 0]
             return output

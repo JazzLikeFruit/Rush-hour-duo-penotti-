@@ -9,11 +9,10 @@ if __name__ == '__main__':
     empty_board = instance.create_board()
     cardic = instance.load_cars(datafile)
     #records = []
-    print(instance.load_board(empty_board))
+    instance.load_board(empty_board)
 
     # --------------------------- Random reassignment --------------------------
     movements = random_algorithm.randy(instance, cardic)
     print(movements)
 
     # --------------------------- Greedy algorithm --------------------------
-    
