@@ -15,7 +15,7 @@ def randy(inst, cars):
     instance_copy = copy.deepcopy(inst)
 
     # Run loop while game not winnable
-    while not instance_copy.check_win():
+    while not instance_copy.cars["X"].row == instance_copy.win_location:
 
         # Choose a car randomly
         randomcar = random.choice(list(cars))
@@ -37,4 +37,6 @@ def randy(inst, cars):
             instance_copy.load_board(empty_board)
 
     instance_copy.car_output()
-    return print(f"finished in {movements} steps")
+    empty_board = instance_copy.create_board()
+
+    return print(instance_copy.load_board(empty_board), movements)

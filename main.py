@@ -15,4 +15,5 @@ if __name__ == '__main__':
     movements = random_algorithm.randy(instance, cardic)
     print(movements)
 
-    # --------------------------- Random reassignment --------------------------
+    # --------------------------- Greedy algorithm --------------------------
+    
