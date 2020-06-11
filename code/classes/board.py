@@ -13,7 +13,6 @@ class Board():
         self.cars = self.load_cars(source_file)
         self.version = {}
 
-
         # define dimension based on name source file
         self.dimension = int(re.search(r"\d+", source_file)[0])
 
@@ -102,10 +101,6 @@ class Board():
                 start = start_x + self.cars[car_key].length
                 end = end_x + self.cars[car_key].length
 
-                # if self.cars[car_key].length == 3:
-                #     start += 1
-                #     end += 1
-
                 for x in range(start, end, step):
                     if self.board[const_y][x] != "0":
                         return False
@@ -162,7 +157,7 @@ class Board():
         # checks if the game is finished by determining the winning position and the position of car X
 
         # check if car X is placed in winning position
-        if self.cars["X"].row == win_location or self.move("X", win_location - self.cars["X"].row):
+        if self.cars["X"].row == self.win_location or self.move("X", self.win_location - self.cars["X"].row):
             return True
         else:
             return False
@@ -190,12 +185,12 @@ class Board():
         self.version[key] = step
 
         return self.version
-    
+
     def empty_saves(self):
         self.version.clear()
         return self.version
-        
-#check move versie die afkapt tot overeenkomstige configuratie
+
+# check move versie die afkapt tot overeenkomstige configuratie
     # def check_move(self):
     #     # checks if move configuration has been achieved in earlier step and returns True if this is not the case
     #     current = {self.cars[car]: (self.cars[car].col, self.cars[car].row) for car in self.cars}
@@ -212,10 +207,11 @@ class Board():
     #         #             return False
     #     return True
 
-#check move versie die nooit een zelfde bord accepteert
+# check move versie die nooit een zelfde bord accepteert
     def check_move(self):
         # checks if move configuration has been achieved in earlier step and returns True if this is not the case
-        current = {self.cars[car]: (self.cars[car].col, self.cars[car].row) for car in self.cars}
+        current = {self.cars[car]: (
+            self.cars[car].col, self.cars[car].row) for car in self.cars}
         #print("checking move..")
 
         for board in self.version:

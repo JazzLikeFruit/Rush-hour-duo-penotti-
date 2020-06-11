@@ -39,4 +39,4 @@ def randy(inst, cars):
     instance_copy.car_output()
     empty_board = instance_copy.create_board()
 
-    return print("Random oplossing in", movements, "stappen.")
+    return print("Random oplossing in", movements, "steps.")
