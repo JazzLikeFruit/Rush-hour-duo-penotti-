@@ -12,10 +12,10 @@ class Board():
     def __init__(self, source_file):
         self.cars = self.load_cars(source_file)
         self.version = {}
-        self.movements = 0
+
 
         # define dimension based on name source file
-        self.dimension = int(re.search("\d+", source_file)[0])
+        self.dimension = int(re.search(r"\d+", source_file)[0])
 
         self.win_location = self.dimension - 1
 
@@ -190,14 +190,37 @@ class Board():
         self.version[key] = step
 
         return self.version
+    
+    def empty_saves(self):
+        self.version.clear()
+        return self.version
+        
+#check move versie die afkapt tot overeenkomstige configuratie
+    # def check_move(self):
+    #     # checks if move configuration has been achieved in earlier step and returns True if this is not the case
+    #     current = {self.cars[car]: (self.cars[car].col, self.cars[car].row) for car in self.cars}
 
+    #     for board in self.version:
+    #         if self.version[board] == current:
+    #             for key in range(board, len(self.version)+1):
+    #                 self.version.pop(key, None)
+    #             return True
+    #         # for car in self.version[key]:
+    #         #     if current[car] == self.version[key][car]:
+    #         #         self.version[key][car][2] += 1
+    #         #         if self.version[key][car][2] == 2:
+    #         #             return False
+    #     return True
+
+#check move versie die nooit een zelfde bord accepteert
     def check_move(self):
         # checks if move configuration has been achieved in earlier step and returns True if this is not the case
-        current = {self.cars[car]: (
-            self.cars[car].col, self.cars[car].row) for car in self.cars}
+        current = {self.cars[car]: (self.cars[car].col, self.cars[car].row) for car in self.cars}
+        #print("checking move..")
 
         for board in self.version:
             if self.version[board] == current:
+                #print("move invalid")
                 return False
             # for car in self.version[key]:
             #     if current[car] == self.version[key][car]:
