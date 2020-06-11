@@ -8,10 +8,10 @@ if __name__ == '__main__':
     empty_board = instance.create_board()
     cardic = instance.load_cars(datafile)
     movements = 0
-    records = []
+    #records = []
     print(instance.load_board(empty_board))
-    times=0
-    while times < 15:
+    times = 0
+    while times < 100:
 
         # Kiest random car uit lijst met cars
         randomcar = random.choice(list(cardic))
@@ -22,44 +22,34 @@ if __name__ == '__main__':
         # Kiest een movement uit die reeks
         randommovement = random.choice(ruimte)
 
-        # if instance.move("X", 1):
-        #     empty_board = instance.create_board(datafile)
-        #     instance.load_board(empty_board)
 
         # Check of movement valid is
-        if instance.move(randomcar, randommovement):
+        if instance.move(randomcar, randommovement) and instance.check_move():
             movements += 1
-            randommovement
-            # print('\n\nGELUKT!!\n\n')
-
+            print ('move valid')
             empty_board = instance.create_board()
           
             instance.load_board(empty_board)
             instance.save_board(movements)
-            #print(instance.save_board(movements))
-            
-            # if movements > 500 and instance.cars["X"].row != 5:
-            #     movements = 0
-            #     instance = board.Board(datafile)
-            #     empty_board = instance.create_board()
-            #     cardic = instance.load_cars(datafile)
-            #     instance.load_board(empty_board)
-            # 
-            times+=1
 
-        if instance.cars["X"].row == 5 or instance.move("X", 5-instance.cars["X"].row):
+        if instance.check_win():
             times += 1
+            print(movements)
 
-            empty_board = instance.create_board(datafile)
+            empty_board = instance.create_board()
             print(instance.load_board(empty_board))
-            instance.car_output()
+
+            with open('with_check.csv', 'a', newline='') as output:
+                writer = csv.writer(output)
+                writer.writerow([times, movements])
+
             print()
 
             # records.append(movements)
 
             # Reload board
-            # movements = 0
-            # instance = board.Board(datafile)
-            # empty_board = instance.create_board(datafile)
-            # cardic = instance.load_cars(datafile)
-            # instance.load_board(empty_board)
+            movements = 0
+            instance = board.Board(datafile)
+            empty_board = instance.create_board()
+            cardic = instance.load_cars(datafile)
+            instance.load_board(empty_board)

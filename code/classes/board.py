@@ -155,11 +155,10 @@ class Board():
 
     def check_win(self):
         # checks if the game is finished by determining the winning position and the position of car X
-        car_location = self.cars["X"].get_position()
         win_location = self.dimension - 1
 
         # check if car X is placed in winning position
-        if car_location["col"] == win_location:
+        if self.cars["X"].row == win_location or self.move("X", win_location - self.cars["X"].row):
             return True
         else:
             return False
@@ -179,10 +178,20 @@ class Board():
 
     
     def save_board(self, movements):
-            # saves car coordinates of current move in a dictionary
-            key = movements
-            current_cars = self.cars
-            self.version[key] = current_cars
+        # saves car coordinates of current move in a dictionary
+        key = movements
+        step={self.cars[car]: (self.cars[car].col, self.cars[car].row) for car in self.cars}
 
-            return self.version
+        self.version[key] = step
 
+        return self.version
+
+    def check_move(self):
+        # checks if move configuration has been achieved in earlier step and returns True if this is not the case
+        current = {self.cars[car]: (self.cars[car].col, self.cars[car].row) for car in self.cars}
+
+        for board in self.version:
+            if self.version[board] == current:
+                return False
+     
+        return True
