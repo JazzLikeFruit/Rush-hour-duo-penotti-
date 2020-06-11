@@ -12,6 +12,7 @@ class Board():
     def __init__(self, source_file):
         self.cars = self.load_cars(source_file)
         self.version = {}
+        self.movements = 0
 
         # define dimension based on name source file
         self.dimension = int(re.search("\d+", source_file)[0])
@@ -177,12 +178,29 @@ class Board():
                 if self.cars[key].block_count != 0:
                     writer.writerow([car, move])
 
-    
-    def save_board(self, movements):
-            # saves car coordinates of current move in a dictionary
-            key = movements
-            current_cars = self.cars
-            self.version[key] = current_cars
 
-            return self.version
+    def save_board(self):
+        # saves car coordinates of current move in a dictionary
+        key = self.movements
+        count = 0
+        step={self.cars[car]: (self.cars[car].col, self.cars[car].row, count) for car in self.cars}
 
+        self.version[key] = step
+
+        return self.version
+
+    def check_move(self):
+        # checks if move configuration has been achieved in earlier step and returns True if this is not the case
+        current = {self.cars[car]: (self.cars[car].col, self.cars[car].row) for car in self.cars}
+
+        for board in self.version:
+            if self.version[board] == current:
+                return False
+            # for car in self.version[key]:
+            #     if current[car] == self.version[key][car]:
+            #         self.version[key][car][2] += 1
+            #         if self.version[key][car][2] == 2:
+            #             return False
+
+        self.movements += 1                
+        return True
