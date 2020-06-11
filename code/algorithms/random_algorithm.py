@@ -37,4 +37,6 @@ def randy(inst, cars):
             instance_copy.load_board(empty_board)
 
     instance_copy.car_output()
-    return print(f"finished in {movements} steps")
+    empty_board = instance_copy.create_board()
+
+    return print(instance_copy.load_board(empty_board), movements)

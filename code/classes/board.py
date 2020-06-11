@@ -17,6 +17,8 @@ class Board():
         # define dimension based on name source file
         self.dimension = int(re.search(r"\d+", source_file)[0])
 
+        self.win_location = self.dimension - 1
+
     def load_cars(self, datafile):
         # load cars dictionary from datafile input
         with open(datafile, 'r') as file:
@@ -156,8 +158,6 @@ class Board():
 
     def check_win(self):
         # checks if the game is finished by determining the winning position and the position of car X
-
-        win_location = self.dimension - 1
 
         # check if car X is placed in winning position
         if self.cars["X"].row == win_location or self.move("X", win_location - self.cars["X"].row):

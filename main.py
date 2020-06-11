@@ -18,3 +18,5 @@ if __name__ == '__main__':
     # --------------------------- Unique configuration each board --------------------------
     movements_unique = unique_moves.unique(instance, cardic)
     movements_unique
+    # --------------------------- Greedy algorithm --------------------------
+    
