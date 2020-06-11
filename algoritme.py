@@ -1,4 +1,4 @@
-from code.classes import cars, board
+from code.classes import cars, boardz
 import random
 
 class Random():
