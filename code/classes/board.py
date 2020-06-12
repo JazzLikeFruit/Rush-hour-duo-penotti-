@@ -20,7 +20,7 @@ class Board():
 
     def load_cars(self, datafile):
         # load cars dictionary from datafile input
-        number = int(re.search("\d+", datafile)[0]) + 1
+        number = int(re.search(r"\d+", datafile)[0]) + 1
 
         with open(datafile, 'r') as file:
             cars = {}
