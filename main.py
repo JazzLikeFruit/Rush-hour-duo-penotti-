@@ -1,4 +1,4 @@
-from code.algorithms import random_algorithm, unique_moves
+from code.algorithms import random_algorithm, unique_moves, end_point
 from code.classes import cars, board
 from numpy import random
 import csv
@@ -16,6 +16,5 @@ if __name__ == '__main__':
     #print(movements)
 
     # --------------------------- Unique configuration each board --------------------------
-    movements_unique = unique_moves.unique(instance, cardic)
-    movements_unique
-    # --------------------------- Greedy algorithm --------------------------
+    # movements_unique = unique_moves.unique(instance, cardic)
+    # movements_unique
