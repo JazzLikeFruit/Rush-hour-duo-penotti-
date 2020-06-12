@@ -2,12 +2,14 @@ from numpy import random
 import csv
 import random
 import copy
+import time
 """
 Algorithm that forces unique configurations on every turn. 
 """
 
 
 def unique(inst, cars):
+    start=time.time()
     # Copy of the main game instance
     instance_copy = copy.deepcopy(inst)
 
@@ -60,8 +62,13 @@ def unique(inst, cars):
             empty_board = instance_copy.create_board()
             instance_copy.load_board(empty_board)
             save_board(instance_copy)
+        elif time.time()-start > 2:
+            start=time.time()
+            return unique(inst, cars)
+            
+            
     instance_copy.car_output()
     empty_saves(instance_copy)
-    return print(f"Oplossing met archief in {movements} steps")
+    return print(f"Oplossing met archief in {movements} steps.")
     
 
