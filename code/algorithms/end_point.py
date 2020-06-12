@@ -42,21 +42,21 @@ class End_point():
 
         car = self.car
 
-        if self.instance_copy.cars[car].orientation == "H":
+        # if self.instance_copy.cars[car].orientation == "H":
 
-            # determine board edges
-            front_edge = self.instance_copy.dimension - self.instance_copy.cars[car].row
-            back_edge = -(self.instance_copy.cars[car].row) + 1
+        #     # determine board edges
+        #     front_edge = self.instance_copy.dimension - self.instance_copy.cars[car].row
+        #     back_edge = -(self.instance_copy.cars[car].row) + 1
 
-            horizontal_space = [x for x in range(back_edge, front_edge) if x != 0]
-            #print(f"horizontal space = {horizontal_space}")
+        #     horizontal_space = [x for x in range(back_edge, front_edge) if x != 0]
+        #     #print(f"horizontal space = {horizontal_space}")
 
-        elif self.instance_copy.cars[car].orientation == "V":
-            front_edge = (self.instance_copy.dimension + 1)-self.instance_copy.cars[car].col
-            back_edge = -(self.instance_copy.cars[car].col) + 2
+        # elif self.instance_copy.cars[car].orientation == "V":
+        #     front_edge = (self.instance_copy.dimension + 1)-self.instance_copy.cars[car].col
+        #     back_edge = -(self.instance_copy.cars[car].col) + 2
 
-            vertical_space = [-(y) for y in range(back_edge, front_edge) if y != 0]
-            #print(f"vertical space = {vertical_space}")
+        #     vertical_space = [-(y) for y in range(back_edge, front_edge) if y != 0]
+        #     #print(f"vertical space = {vertical_space}")
 
         if car == "X":
             # check if there is a space available to move car X towards the exit

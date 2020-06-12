@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-from code.algorithms import random_algorithm, unique_moves, end_point
-=======
-from code.algorithms import random_algorithm, unique_moves, short_path
->>>>>>> ad7940f94037d9ac56dd8f4decd3e6fd345b10bd
+from code.algorithms import random_algorithm, unique_moves, short_path, end_point
 from code.classes import cars, board
 from numpy import random
 import csv
@@ -19,14 +15,12 @@ if __name__ == '__main__':
     movements = random_algorithm.randy(instance, cardic)
     movements
     # --------------------------- Unique configuration each board --------------------------
-<<<<<<< HEAD
-    # movements_unique = unique_moves.unique(instance, cardic)
-    # movements_unique
-=======
     movements_unique = unique_moves.unique(instance, cardic)
     movements_unique
     # --------------------------- Unique configuration each board --------------------------
     short_path = short_path.unique(instance, cardic)
     short_path   
+    # --------------------------- End-point algorithm --------------------------
+    movements = end_point.End_point(instance, cardic)
+    movements.is_blocked()
     # --------------------------- Greedy algorithm --------------------------
->>>>>>> ad7940f94037d9ac56dd8f4decd3e6fd345b10bd
