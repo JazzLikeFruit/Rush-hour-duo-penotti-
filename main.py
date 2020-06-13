@@ -9,13 +9,13 @@ if __name__ == '__main__':
     empty_board = instance.create_board()
     cardic = instance.load_cars(datafile)
     #records = []
-    instance.load_board(empty_board)
+    print(instance.load_board(empty_board))
 
     # --------------------------- Random reassignment --------------------------
-    #movements = random_algorithm.randy(instance, cardic)
-    #print(movements)
+    movements = random_algorithm.randy(instance, cardic)
+    print(movements)
 
     # --------------------------- Unique configuration each board --------------------------
-    movements_unique = unique_moves.unique(instance, cardic)
-    movements_unique
+    # movements_unique = unique_moves.unique(instance, cardic)
+    # movements_unique
     # --------------------------- Greedy algorithm --------------------------
