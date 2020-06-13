@@ -3,7 +3,7 @@ import csv
 import random
 import copy
 """
-Algotithm that randomly generates a solution. 
+Algorithm that randomly generates a solution. 
 """
 
 

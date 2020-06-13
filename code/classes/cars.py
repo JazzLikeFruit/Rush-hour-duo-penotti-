@@ -19,7 +19,8 @@ class Car:
         # returns position of car on the board
         self.position["row"] = self.col
         self.position["col"] = self.row # switched up to match the board
-        return self.position
+        self.coordinates = (self.col, self.row)
+        return self.coordinates
 
     def get_move_count(self):
         # returns the number of times a car has been moved

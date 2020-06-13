@@ -20,7 +20,7 @@ class Board():
 
     def load_cars(self, datafile):
         # load cars dictionary from datafile input
-        number = int(re.search("\d+", datafile)[0]) + 1
+        number = int(re.search(r"\d+", datafile)[0]) + 1
 
         with open(datafile, 'r') as file:
             cars = {}
@@ -189,41 +189,3 @@ class Board():
     def empty_saves(self):
         self.version.clear()
         return self.version
-
-# check move versie die afkapt tot overeenkomstige configuratie
-    # def check_move(self):
-    #     # checks if move configuration has been achieved in earlier step and returns True if this is not the case
-    #     current = {self.cars[car]: (self.cars[car].col, self.cars[car].row) for car in self.cars}
-
-    #     for board in self.version:
-    #         if self.version[board] == current:
-    #             for key in range(board, len(self.version)+1):
-    #                 self.version.pop(key, None)
-    #             return True
-    #         # for car in self.version[key]:
-    #         #     if current[car] == self.version[key][car]:
-    #         #         self.version[key][car][2] += 1
-    #         #         if self.version[key][car][2] == 2:
-    #         #             return False
-    #     return True
-
-# check move versie die nooit een zelfde bord accepteert
-    def check_move(self):
-        # checks if move configuration has been achieved in earlier step and returns True if this is not the case
-        current = {self.cars[car]: (
-            self.cars[car].col, self.cars[car].row) for car in self.cars}
-        #print("checking move..")
-
-        for board in self.version:
-            if self.version[board] == current:
-                #print("move invalid")
-                return False
-            # for car in self.version[key]:
-            #     if current[car] == self.version[key][car]:
-            #         self.version[key][car][2] += 1
-            #         if self.version[key][car][2] == 2:
-            #             return False
-
-        self.movements += 1
-        return True
-        
