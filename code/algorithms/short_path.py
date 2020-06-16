@@ -43,7 +43,7 @@ def unique(inst, cars):
 
     # Run loop while game not winnable
     while not instance_copy.check_win():
-
+        dupe=instance_copy
         # Choose a car randomly
         randomcar = random.choice(list(cars))
 
@@ -54,8 +54,9 @@ def unique(inst, cars):
         randommovement = random.choice(movementspace)
 
         # Perform movement if this is possible
-        if instance_copy.move(randomcar, randommovement) and check_move(instance_copy):
-
+        if dupe.move(randomcar, randommovement) and check_move(instance_copy):
+            instance_copy.move(randomcar, randommovement)
+            
             # Count movements made
             movements += 1
 

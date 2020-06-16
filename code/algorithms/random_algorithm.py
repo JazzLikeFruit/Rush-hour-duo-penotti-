@@ -34,10 +34,7 @@ def randy(inst, cars):
 
             # Reload board
             empty_board = instance_copy.create_board()
-            print(instance_copy.load_board(empty_board))
-            break
-        print("movenot possible")
-        break
+            instance_copy.load_board(empty_board)
 
     instance_copy.car_output()
     empty_board = instance_copy.create_board()

@@ -29,7 +29,7 @@ def unique(inst, cars):
         instance_copy.version.clear()
         return instance_copy.version
 
-    def check_move(instance_copy, movements):
+    def check_move(instance_copy):
         # checks if move configuration has been achieved in earlier step and returns False if this is the case
         current = {instance_copy.cars[car]: (instance_copy.cars[car].col, instance_copy.cars[car].row) for car in instance_copy.cars}
 
@@ -42,7 +42,7 @@ def unique(inst, cars):
 
     # Run loop while game not winnable
     while not instance_copy.check_win():
-
+        dupe=instance_copy
         # Choose a car randomly
         randomcar = random.choice(list(cars))
 
@@ -53,22 +53,26 @@ def unique(inst, cars):
         randommovement = random.choice(movementspace)
 
         # Perform movement if this is possible
-        if instance_copy.move(randomcar, randommovement) and check_move(instance_copy, movements):
+        if  dupe.move(randomcar, randommovement):
+            if check_move(instance_copy):
+                instance_copy.move(randomcar, randommovement)
 
-            # Count movements made
-            movements += 1
+                # Count movements made
+                movements += 1
 
-            # Reload board
-            empty_board = instance_copy.create_board()
-            instance_copy.load_board(empty_board)
-            save_board(instance_copy)
-        elif time.time()-start > 2:
-            start=time.time()
-            return unique(inst, cars)
+                # Reload board
+                empty_board = instance_copy.create_board()
+                instance_copy.load_board(empty_board)
+                save_board(instance_copy)
+            elif time.time()-start > 2:
+                start=time.time()
+                empty_saves(instance_copy)
+                return unique(inst, cars)
             
             
     instance_copy.car_output()
     empty_saves(instance_copy)
+    print(instance_copy.load_board(empty_board))
     return print(f"Oplossing met archief in {movements} steps.")
     
 
