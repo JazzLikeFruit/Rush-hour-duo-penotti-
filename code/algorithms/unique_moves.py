@@ -54,25 +54,24 @@ def unique(inst, cars):
 
         # Perform movement if this is possible
         if  dupe.move(randomcar, randommovement):
-            if check_move(instance_copy):
+            if check_move(dupe):
                 instance_copy.move(randomcar, randommovement)
 
                 # Count movements made
                 movements += 1
-
                 # Reload board
-                empty_board = instance_copy.create_board()
-                instance_copy.load_board(empty_board)
                 save_board(instance_copy)
-            elif time.time()-start > 2:
-                start=time.time()
-                empty_saves(instance_copy)
-                return unique(inst, cars)
+                empty_board = instance_copy.create_board()
+                print(instance_copy.load_board(empty_board))
+                
+        elif time.time()-start > 5:
+            start=time.time()
+            empty_saves(instance_copy)
+            return unique(inst, cars)
             
             
     instance_copy.car_output()
     empty_saves(instance_copy)
-    print(instance_copy.load_board(empty_board))
     return print(f"Oplossing met archief in {movements} steps.")
     
 
