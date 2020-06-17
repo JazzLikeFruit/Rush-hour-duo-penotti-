@@ -48,51 +48,67 @@ class End_point():
             else:
                 blocker_x = self.is_not_blocked("X")
 
-                blocker["1"] = blocker_x
-                blocker["2"] = None
+                blocker["X"] = blocker_x
+                # blocker["2"] = None
                 # nog geen blocker 2
 
-                while True:
-                    blocker_copy=blocker
-                    for car in blocker_copy.values():
+                #while True:
+                #blocker_copy = blocker
+                # print(f"blocker copy = {blocker}")
+                # if blocker_copy["1"] in checked_cars:
+                #     blocker_copy["1"] = None
+
+                # if blocker_copy["2"] in checked_cars:
+                #     blocker_copy["2"] = None
+
+                # print(f"blocker checked = {blocker}")
+                print(f"blockers = {blocker}")
+                blocker_copy = blocker
+                for cars in blocker_copy.values():
+                    for car in cars:                                            
                         print(f"car in loop = {car}")
+                        checked_cars.append(car)
                         
-                        if car == "edge":
+                        if car == "edge" or car == None:
                             # niet gebruiken
+                            print(f"{car} skipped")
                             continue
 
                         blockers = self.is_not_blocked(car)
 
-                        blocker["1"] = blockers[0]
-                        blocker["2"] = blockers[1]
+                        if blockers != True:
+                            blocker[car] = blockers
 
                         print(f"{blocker}")
 
-                        for block in blocker.values():
-                            if block == "edge":
-                                continue
-                            if self.is_not_blocked(block) == True:
-                                if block not in free_cars:
-                                    free_cars.append(block)
-                                break
+                        for blockers in blocker_copy.values():
+                            for blocker in blockers:
+                                if blocker == "edge":
+                                    continue
+                                if self.is_not_blocked(blocker) == True:
+                                    if blocker not in free_cars:
+                                        free_cars.append(blocker)
+                                        print(f"free cars = {free_cars}")
+                                    break
 
-                while True:
-                    # Choose a car randomly from free cars
-                    randomcar = random.choice(list(free_cars))
+                if free_cars != None:
+                    while True:
+                        # Choose a car randomly from free cars
+                        randomcar = random.choice(list(free_cars))
 
-                    # Check movable spaces of the car
-                    movementspace = self.instance_copy.check_space(randomcar)
+                        # Check movable spaces of the car
+                        movementspace = self.instance_copy.check_space(randomcar)
 
-                    # Choose a move randomly
-                    randommovement = random.choice(movementspace)
+                        # Choose a move randomly
+                        randommovement = random.choice(movementspace)
 
-                    if self.instance_copy.move(randomcar, randommovement):
-                        self.movements+=1
-                        break
+                        if self.instance_copy.move(randomcar, randommovement):
+                            self.movements += 1
+                            break
 
                 free_cars.clear()
                 checked_cars.clear()
-                print(self.movements)
+                print(f"step {self.movements}")
             
     def is_not_blocked(self, car):    
         # returns which car is blocking input car if there is no space to move
