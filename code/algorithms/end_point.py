@@ -17,7 +17,7 @@ class End_point():
         self.instance_copy = copy.deepcopy(inst, self.cars)
 
         # # print to check
-        # empty_board = self.instance_copy.create_board()
+        self.empty_board = self.instance_copy.create_board()
         # print(self.instance_copy.load_board(empty_board))
 
         self.border = self.instance_copy.dimension + 1
@@ -39,60 +39,82 @@ class End_point():
         blocker = {}
         free_cars = []
         checked_cars = []
+        last_car = {"auto": ""}
 
         while not self.instance_copy.check_win():
-            
             if self.is_not_blocked("X") == True:
                 self.instance_copy.move("X", 1) # of random stap?????
 
             else:
                 blocker_x = self.is_not_blocked("X")
 
-                blocker["1"] = blocker_x
-                blocker["2"] = None
-                # nog geen blocker 2
+                blocker["X"] = blocker_x
 
                 while True:
-                    blocker_copy=blocker
-                    for car in blocker_copy.values():
-                        print(f"car in loop = {car}")
-                        
-                        if car == "edge":
-                            # niet gebruiken
-                            continue
+                    lengte = len(checked_cars)
+                    print(f"len = {lengte}")
+                    print(f"blockers = {blocker}")
+                    blocker_copy = blocker.copy()
+                    #print('a', blocker_copy)
 
-                        blockers = self.is_not_blocked(car)
+                    for cars in blocker_copy.values():
+                        for car in cars:            
+                            if car in checked_cars:
+                                continue                    
 
-                        blocker["1"] = blockers[0]
-                        blocker["2"] = blockers[1]
-
-                        print(f"{blocker}")
-
-                        for block in blocker.values():
-                            if block == "edge":
+                            print(f"car in loop = {car}")
+                            
+                            if car not in checked_cars:
+                                checked_cars.append(car)
+                            
+                            if car == "edge" or car == True:
+                                # niet gebruiken
+                                print(f"{car} skipped")
                                 continue
-                            if self.is_not_blocked(block) == True:
-                                if block not in free_cars:
-                                    free_cars.append(block)
-                                break
+                            print(car)        
+                            blockers = self.is_not_blocked(car)
+                            
+                            if blockers[1] != True:
+                                blocker[car] = blockers
 
-                while True:
-                    # Choose a car randomly from free cars
-                    randomcar = random.choice(list(free_cars))
+                            print(f"{blocker}")
 
-                    # Check movable spaces of the car
-                    movementspace = self.instance_copy.check_space(randomcar)
+                            for blockers in blocker_copy.values():
+                                for block in blockers:
+                                    if block == "edge" or block == True:
+                                        continue
+                                    if self.is_not_blocked(block)[0] == True:
+                                        if block not in free_cars:
+                                            free_cars.append(block)
+                                            print(f"free cars = {free_cars}")
 
-                    # Choose a move randomly
-                    randommovement = random.choice(movementspace)
+                    if len(checked_cars) == lengte:
+                        break                    
 
-                    if self.instance_copy.move(randomcar, randommovement):
-                        self.movements+=1
-                        break
+                if len(free_cars) > 0:
+                    while True:
+                        # print("making a step")
+                        # Choose a car randomly from free cars
+                        randomcar = random.choice(list(free_cars))
 
+                        # Check movable spaces of the car
+                        movementspace = self.instance_copy.check_space(randomcar)
+
+                        # Choose a move randomly
+                        randommovement = random.choice(movementspace)
+
+                        if randomcar != last_car["auto"] and self.instance_copy.move(randomcar, randommovement):
+                            self.movements += 1
+                            empty_board = self.instance_copy.create_board()
+                            print(self.instance_copy.load_board(empty_board))
+                            self.instance_copy.check_win()
+                            last_car["auto"] = randomcar
+                            break              
+                
                 free_cars.clear()
                 checked_cars.clear()
-                print(self.movements)
+                blocker.clear()
+                print(f"step {self.movements}")
             
     def is_not_blocked(self, car):    
         # returns which car is blocking input car if there is no space to move
@@ -122,31 +144,30 @@ class End_point():
                 left_col = self.instance_copy.cars[car].row - 1
                 right_col = self.instance_copy.cars[car].row + length
 
-                # print columns left & right of car as check
-                # print(f"left col = {left_col}")
-                # print(f"right col = {right_col}")
-
                 # determine board filler left & right of car
                 space_left = self.get_car(left_col, self.instance_copy.cars[car].col)
-                space_right = self.get_car(right_col, self.instance_copy.cars[car].col)                
-                
-                # print(f"left space = {space_left}")
-                # print(f"right space = {space_right}")
+                space_right = self.get_car(right_col, self.instance_copy.cars[car].col)  
+                             
 
                 # check if car is facing an open space
-                if (space_left.isnumeric() and left_col != 0) or (space_right.isnumeric() and right_col != self.border):
-                    # print("not blocked!")
-                    return True
+                if (space_left.isnumeric() and left_col != 0) and (space_right.isnumeric() and right_col != self.border):
+                    return (True, True)
+                if (space_left == str(0) and left_col != 0):
+                    blocker = self.get_car(right_col, self.instance_copy.cars[car].col)
+                    return (True, blocker)
+
+                elif (space_right == str(0) and right_col != self.border):
+                    blocker = self.get_car(left_col, self.instance_copy.cars[car].col)
+                    return (True, blocker)
 
                 elif self.get_car(left_col, self.instance_copy.cars[car].col) not in self.cars:
                     # blocked by the wall  on the left
-                    blocker_left = "edge"
                     blocker_right = self.get_car(right_col, self.instance_copy.cars[car].col)
 
                 elif self.get_car(right_col, self.instance_copy.cars[car].col) not in self.cars:
-                    # blocked by wall on the right
-                    blocker_right = "edge"
+                    # blocked by wall on the right                    
                     blocker_left = self.get_car(left_col, self.instance_copy.cars[car].col)
+ 
 
                 else:
                     # determine which cars are blocking the sides
@@ -156,6 +177,11 @@ class End_point():
                 # print(f"return left blocker = {blocker_left}")
                 # print(f"return right blocker = {blocker_right}")
 
+                if blocker_left.isnumeric() and int(blocker_left) > 0:
+                    blocker_left = "edge"
+                if blocker_right.isnumeric() and int(blocker_right) > 0:
+                    blocker_left = "edge"
+
                 return (blocker_left, blocker_right)
 
             elif self.instance_copy.cars[car].orientation == "V":
@@ -164,21 +190,22 @@ class End_point():
                 row_up = self.instance_copy.cars[car].col - length
                 row_down = self.instance_copy.cars[car].col + 1
 
-                # print columns above & below of car as check
-                # print(f"upper row = {row_up}")
-                # print(f"down row = {row_down}")
-
                 # determine board filler above & below of car
                 space_up = self.get_car(self.instance_copy.cars[car].row, row_up)
-                space_down = self.get_car(self.instance_copy.cars[car].row, row_down)                
                 
-                # print(f"upper space = {space_up}")
-                # print(f"down space = {space_down}")
+                space_down = self.get_car(self.instance_copy.cars[car].row, row_down)                
 
                 # check if car is facing an open space
-                if (space_up.isnumeric() and row_up != 0) or (space_down.isnumeric() and row_down != self.border):
-                    # print("not blocked!")
-                    return True
+                if (space_up.isnumeric() and row_up != 0) and (space_down.isnumeric() and row_down != self.border):
+                    return (True, True)
+
+                if (space_up.isnumeric() and row_up != 0):
+                    blocker = self.get_car(self.instance_copy.cars[car].row, row_up)
+                    return (True, blocker)
+
+                elif (space_down.isnumeric() and row_down != self.border):
+                    blocker = self.get_car(self.instance_copy.cars[car].row, row_down)
+                    return (True, blocker)
 
                 elif self.get_car(self.instance_copy.cars[car].row, row_up) not in self.cars:
                     # blocked by the wall above
