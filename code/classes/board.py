@@ -81,6 +81,56 @@ class Board():
 
         return self.board
 
+    def check_move(self, car_key, blocks):
+        step = 1
+
+        # moves the car along the number of blocks depending on orientation
+        if self.cars[car_key].orientation == "H":
+            const_y = self.cars[car_key].col
+            end_x = self.cars[car_key].row + blocks
+            start_x = self.cars[car_key].row
+
+            # determine if the car moves in positive or negative direction
+            if blocks < 0:
+
+                for x in range(start_x - 1, end_x - 1, -step):
+                    if self.board[const_y][x] != "0":
+                        return False
+            else:
+
+                start = start_x + self.cars[car_key].length
+                end = end_x + self.cars[car_key].length
+
+                for x in range(start, end, step):
+                    if self.board[const_y][x] != "0":
+                        return False
+            return True
+
+        elif self.cars[car_key].orientation == "V":
+            const_x = self.cars[car_key].row
+            start_y = self.cars[car_key].col
+            end_y = self.cars[car_key].col - blocks
+
+            if blocks < 0:
+                end_y = self.cars[car_key].col + -(blocks)
+                start = start_y
+                end = end_y
+
+                if self.cars[car_key].length == 3:
+                    start += 1
+                    end += 1
+
+                for y in range(start + 1, end + 1, step):
+                    if self.board[y][const_x] != "0":
+                        return False
+
+            else:
+                for y in range(start_y - 2, end_y - 2, -step):
+                    if self.board[y][const_x] != "0":
+                        return False
+            return True
+        return False
+
     def move(self, car_key, blocks):
         step = 1
 
@@ -136,7 +186,6 @@ class Board():
             self.cars[car_key].col = end_y
             self.cars[car_key].block_count += blocks
             return True
-
         return False
 
     def check_space(self, car_key):
@@ -175,9 +224,9 @@ class Board():
                 if self.cars[key].block_count != 0:
                     writer.writerow([car, move])
 
-    def save_board(self):
+    def save_board(self, movement, current_board):
         # saves car coordinates of current move in a dictionary
-        key = self.movements
+        key = movement
         count = 0
         step = {self.cars[car]: (
             self.cars[car].col, self.cars[car].row, count) for car in self.cars}
@@ -189,3 +238,12 @@ class Board():
     def empty_saves(self):
         self.version.clear()
         return self.version
+
+    def possible_movements(self):
+        possibilities = dict()
+        for key in self.cars:
+            move_list = self.check_space(key)
+            for move in move_list:
+                if self.check_move(key, move):
+                    possibilities.setdefault(key, []).append(move)
+        return possibilities

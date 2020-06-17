@@ -9,6 +9,8 @@ if __name__ == '__main__':
     empty_board = instance.create_board()
     cardic = instance.load_cars(datafile)
     #records = []
+    instance.load_board(empty_board)
+    print(instance.possible_movements())
     print(instance.load_board(empty_board))
 
     # --------------------------- Random reassignment --------------------------
@@ -19,8 +21,8 @@ if __name__ == '__main__':
     # movements_unique
     # --------------------------- Unique configuration each board --------------------------
     # short_path = short_path.unique(instance, cardic)
-    # short_path   
+    # short_path
     # --------------------------- End-point algorithm --------------------------
-    movements = end_point.End_point(instance, cardic)
-    movements.run()
+    # movements = end_point.End_point(instance, cardic)
+    # movements.run()
     # --------------------------- Greedy algorithm --------------------------
