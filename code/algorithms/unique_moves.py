@@ -9,6 +9,7 @@ Algorithm that forces unique configurations on every turn.
 
 
 def unique(inst, cars):
+
     start=time.time()
     # Copy of the main game instance
     instance_copy = copy.deepcopy(inst)
@@ -38,11 +39,9 @@ def unique(inst, cars):
                 return False
 
         return True
-
-
+    
     # Run loop while game not winnable
     while not instance_copy.check_win():
-        dupe=instance_copy
         # Choose a car randomly
         randomcar = random.choice(list(cars))
 
@@ -51,27 +50,29 @@ def unique(inst, cars):
 
         # Choose a move randomly
         randommovement = random.choice(movementspace)
-
         # Perform movement if this is possible
-        if  dupe.move(randomcar, randommovement):
-            if check_move(dupe):
-                instance_copy.move(randomcar, randommovement)
-
+        if instance_copy.move(randomcar, randommovement):
+            if check_move(instance_copy):
                 # Count movements made
                 movements += 1
                 # Reload board
                 save_board(instance_copy)
                 empty_board = instance_copy.create_board()
-                print(instance_copy.load_board(empty_board))
-                
-        elif time.time()-start > 5:
+                result=instance_copy.load_board(empty_board)
+
+            else:
+                instance_copy.move(randomcar, -randommovement)
+                empty_board = instance_copy.create_board()
+                result=instance_copy.load_board(empty_board)
+        elif time.time()-start > 0.03:
             start=time.time()
             empty_saves(instance_copy)
             return unique(inst, cars)
-            
+ 
             
     instance_copy.car_output()
     empty_saves(instance_copy)
+    print(result)
     return print(f"Oplossing met archief in {movements} steps.")
     
 

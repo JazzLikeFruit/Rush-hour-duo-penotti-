@@ -9,18 +9,32 @@ if __name__ == '__main__':
     empty_board = instance.create_board()
     cardic = instance.load_cars(datafile)
     #records = []
+    print("\nRUSH HOUR - Duo Penotti\n")
     print(instance.load_board(empty_board))
+    print("\n====================================\n")
+    print("Choose an alogithm to solve the puzzel with by typing the number :")
+    print("- 1 Random Algorithm\n- 2 Unique moves Algorithm\n- 3 Optimalised moves Algorithm\n- 4 End Point Algorithm")
+    algorithms={'1':'Random Algorithm', '2':'Unique moves Algorithm', '3':'Optimalised moves Algorithm', '4':'End Point Algorithm', '5':'Sample of all algorithms'}
+    while True:
+        print("\nEnter your choice:")
+        inputalgorithm=input().lower()
+        if inputalgorithm not in algorithms:
+            print ('Incorrect algorithm select one of the following: ')
+            for algo in algorithms:
+                print (algo)
+        else:
+            print('Loading', algorithms[inputalgorithm], '...')
+            break
 
-    # --------------------------- Random reassignment --------------------------
-    # movements = random_algorithm.randy(instance, cardic)
-    # movements
-    # --------------------------- Unique configuration each board --------------------------
-    # movements_unique = unique_moves.unique(instance, cardic)
-    # movements_unique
-    # --------------------------- Unique configuration each board --------------------------
-    # short_path = short_path.unique(instance, cardic)
-    # short_path   
-    # --------------------------- End-point algorithm --------------------------
-    movements = end_point.End_point(instance, cardic)
-    movements.run()
-    # --------------------------- Greedy algorithm --------------------------
+
+    if inputalgorithm == '1':
+        random_algorithm.randy(instance, cardic)
+    elif inputalgorithm == '2':
+        unique_moves.unique(instance, cardic)
+    elif inputalgorithm == '3':
+        short_path.unique(instance, cardic)
+    elif inputalgorithm == '4':
+        end_point.End_point(instance, cardic)
+    elif inputalgorithm == '5':
+        #optie om alle algoritmes x aantal keer te laten draaien en de data te verzmalen in een diagram / csv
+        pass  
