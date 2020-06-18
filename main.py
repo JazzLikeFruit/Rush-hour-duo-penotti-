@@ -1,4 +1,4 @@
-from code.algorithms import random_algorithm, unique_moves, short_path, end_point
+from code.algorithms import random_algorithm, unique_moves, short_path, end_point, breadth_first
 from code.classes import cars, board
 from numpy import random
 import csv
@@ -38,16 +38,15 @@ if __name__ == '__main__':
     print("- 1 Random Algorithm\n- 2 Unique moves Algorithm\n- 3 Optimized moves Algorithm\n- 4 End Point Algorithm")
     algorithms={'1':'Random Algorithm', '2':'Unique moves Algorithm', '3':'Optimized moves Algorithm', '4':'End Point Algorithm', '5':'Sample of all algorithms'}
     while True:
+
         print("\nEnter your choice:")
-        inputalgorithm=input().lower()
+        inputalgorithm = input().lower()
         if inputalgorithm not in algorithms:
-            print ('Incorrect algorithm select one of the following: ')
-            for algo in algorithms:
-                print (algo)
+            print('Incorrect algorithm select one of the following: ')
+
         else:
             print('\nLoading', algorithms[inputalgorithm], '...\n')
             break
-
 
     if inputalgorithm == '1':
         result=random_algorithm.randy(instance, cardic)

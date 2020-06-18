@@ -240,10 +240,12 @@ class Board():
         return self.version
 
     def possible_movements(self):
-        possibilities = dict()
+        possibilities = []
         for key in self.cars:
             move_list = self.check_space(key)
             for move in move_list:
+
                 if self.check_move(key, move):
-                    possibilities.setdefault(key, []).append(move)
+                    tuple = (key, move)
+                    possibilities.append(tuple)
         return possibilities
