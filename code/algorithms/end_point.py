@@ -1,4 +1,5 @@
 from numpy import random
+from .random_algorithm import randy
 import csv
 import random
 import copy
@@ -22,10 +23,29 @@ class End_point():
 
         self.border = self.instance_copy.dimension + 1
 
-        print(f"border: {self.border}")
+        # print(f"border: {self.border}")
         #self.car = input("Which car?\n").upper()
-        print()
+        # print()
         
+    def random_run(self, threshold):
+        threshold = threshold
+
+        value = 0
+
+        print(f"value = {value}")
+
+        while not self.instance_copy.check_win():
+            if value < threshold:
+                print("use single run")
+                self.single_run()
+            else:
+                print("use random")
+                randy(self.instance_copy, self.cars)
+                self.movements += 1
+            
+            value = random.uniform(0, 1)
+
+        print(f"finished in {self.movements} steps")
 
     def run(self):
         blocker = {}
@@ -44,23 +64,23 @@ class End_point():
                     checked_cars.append("X")
                     
                     lengte = len(checked_cars)
-                    print(f"# of checked cars = {lengte}\n")
-                    print(f"blockers = {blocker}")
+                    # print(f"# of checked cars = {lengte}\n")
+                    # print(f"blockers = {blocker}")
                     blocker_copy = blocker.copy()
-                    print(f"cars that should be skipped:  {checked_cars}")
+                    # print(f"cars that should be skipped:  {checked_cars}")
 
                     for cars in blocker_copy.values():
                         for car in cars:            
                             if car == "edge" or car == True:
                                 # niet gebruiken
-                                print(f"{car} skipped")
+                                # print(f"{car} skipped")
                                 continue
 
                             if car in checked_cars:
-                                print(f"{car} already checked")
+                                # print(f"{car} already checked")
                                 continue                    
 
-                            print(f"\ncar in loop = {car}")
+                            # print(f"\ncar in loop = {car}")
                             
                             if car not in checked_cars:
                                 checked_cars.append(car)
@@ -68,10 +88,10 @@ class End_point():
                             blockers = self.is_not_blocked(car)
                             
                             if blockers[1] != True:
-                                print(f"added {car} to blockers")
+                                # print(f"added {car} to blockers")
                                 blocker[car] = blockers
 
-                            print(f"blocker update: {blocker}")
+                            # print(f"blocker update: {blocker}")
 
                             for blockers in blocker_copy.values():
                                 for block in blockers:
@@ -79,9 +99,9 @@ class End_point():
                                         continue
                                     if self.is_not_blocked(block)[0] == True:
                                         if block not in free_cars:
-                                            print(f"added {block} to free cars")
+                                            # print(f"added {block} to free cars")
                                             free_cars.append(block)
-                                            print(f"free cars = {free_cars}\n")
+                                            # print(f"free cars = {free_cars}\n")
 
                     if len(checked_cars) == lengte:
                         break                    
@@ -99,7 +119,7 @@ class End_point():
 
                         if randomcar != last_car["auto"] and self.instance_copy.move(randomcar, randommovement):
                             self.movements += 1
-                            print("making a step")
+                            # print("making a step")
                             empty_board = self.instance_copy.create_board()
                             print(self.instance_copy.load_board(empty_board))
                             self.instance_copy.check_win()
@@ -109,7 +129,87 @@ class End_point():
                 free_cars.clear()
                 checked_cars.clear()
                 blocker.clear()
-                print(f"step {self.movements}")
+                # print(f"step {self.movements}")
+
+
+    def single_run(self):
+        blocker = {}
+        free_cars = []
+        checked_cars = []
+        last_car = {"auto": ""}
+
+        while True:
+            blocker_x = self.is_not_blocked("X")
+            blocker["X"] = blocker_x
+            checked_cars.append("X")
+            
+            lengte = len(checked_cars)
+            # print(f"# of checked cars = {lengte}\n")
+            # print(f"blockers = {blocker}")
+            blocker_copy = blocker.copy()
+            # print(f"cars that should be skipped:  {checked_cars}")
+
+            for cars in blocker_copy.values():
+                for car in cars:            
+                    if car == "edge" or car == True:
+                        # niet gebruiken
+                        # print(f"{car} skipped")
+                        continue
+
+                    if car in checked_cars:
+                        # print(f"{car} already checked")
+                        continue                    
+
+                    # print(f"\ncar in loop = {car}")
+                    
+                    if car not in checked_cars:
+                        checked_cars.append(car)
+                    
+                    blockers = self.is_not_blocked(car)
+                    
+                    if blockers[1] != True:
+                        # print(f"added {car} to blockers")
+                        blocker[car] = blockers
+
+                    # print(f"blocker update: {blocker}")
+
+                    for blockers in blocker_copy.values():
+                        for block in blockers:
+                            if block == "edge" or block == True:
+                                continue
+                            if self.is_not_blocked(block)[0] == True:
+                                if block not in free_cars:
+                                    # print(f"added {block} to free cars")
+                                    free_cars.append(block)
+                                    # print(f"free cars = {free_cars}\n")
+
+            if len(checked_cars) == lengte:
+                break                    
+
+        if len(free_cars) > 0:
+            while True:
+                # Choose a car randomly from free cars
+                randomcar = random.choice(list(free_cars))
+
+                # Check movable spaces of the car
+                movementspace = self.instance_copy.check_space(randomcar)
+
+                # Choose a move randomly
+                randommovement = random.choice(movementspace)
+
+                if randomcar != last_car["auto"] and self.instance_copy.move(randomcar, randommovement):
+                    self.movements += 1
+                    print(f"moved {randomcar}")
+                    empty_board = self.instance_copy.create_board()
+                    print(self.instance_copy.load_board(empty_board))
+                    self.instance_copy.check_win()
+                    last_car["auto"] = randomcar
+                    break              
+        
+        free_cars.clear()
+        checked_cars.clear()
+        blocker.clear()
+        # print(f"step {self.movements}")
 
             
     def is_not_blocked(self, car):    
@@ -120,7 +220,7 @@ class End_point():
         if car == "X":
             # check if there is a space available to move car X towards the exit
             space_x = self.get_car(self.instance_copy.cars["X"].row + 2, self.instance_copy.cars["X"].col)
-            print(f"x space = {space_x}")
+            # print(f"x space = {space_x}")
 
             # if self.instance_copy.cars["X"].row + 2 == "0": # checkt 1 stap naar rechts + 2 blocks auto lengte
             #     return True

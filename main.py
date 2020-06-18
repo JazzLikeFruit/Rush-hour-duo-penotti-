@@ -61,8 +61,9 @@ if __name__ == '__main__':
         print(result[0])
         print(result[1])
     elif inputalgorithm == '4':
+        threshold = input("how often should end-point be used?\nenter value between 0-1\n")
         ep = end_point.End_point(instance, cardic)
-        ep.run()
+        ep.random_run(threshold)
         print(result[0])
         print(result[1])
 
