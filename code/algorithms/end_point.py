@@ -65,8 +65,6 @@ class End_point():
                             if car not in checked_cars:
                                 checked_cars.append(car)
                             
-                            
-
                             blockers = self.is_not_blocked(car)
                             
                             if blockers[1] != True:
