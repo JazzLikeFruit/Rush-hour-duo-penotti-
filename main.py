@@ -68,37 +68,42 @@ if __name__ == '__main__':
 
     elif inputalgorithm == '5':
         #optie om alle algoritmes x aantal keer te laten draaien en de data te verzmalen in een diagram / csv
-        iterations=1
-
-        randdic={}
+        iterations=[]
+        times=[]
+        results=[]
+        algo=[]
+        resultdic={}
         start=time.time()
-        while  iterations < 6:
+        while  len(iterations) < 6:
             startiteration=time.time()
             result=random_algorithm.randy(instance, cardic)
-            randdic[iterations]=(result[0],time.time()-startiteration)
-            iterations +=1
-        print(time.time()-start)
-        print(randdic)
+            times.append(time.time()-startiteration)
+            results.append(result[0])
+            algo.append('Random')
+            iterations.append(len(iterations)+1)
+
 
         uniquedic={}
         start=time.time()
-        while  iterations < 11:
+        while  len(iterations) < 11:
             startiteration=time.time()
             result=unique_moves.unique(instance, cardic)
-            uniquedic[iterations]=(result[0],time.time()-startiteration)
-            iterations+=1
-        print(time.time()-start)
-        print(uniquedic)
+            times.append(time.time()-startiteration)
+            results.append(result[0])
+            algo.append('Unique')
+            iterations.append(len(iterations)+1)
+
 
         shortdic={}
         start=time.time()
-        while  iterations < 16:
+        while  len(iterations) < 16:
             startiteration=time.time()
             result=short_path.unique(instance, cardic)
-            shortdic[iterations]=(result[0],time.time()-startiteration)
-            iterations +=1
-        print(time.time()-start)
-        print(shortdic)
+            times.append(time.time()-startiteration)
+            results.append(result[0])
+            algo.append('Short')
+            iterations.append(len(iterations)+1)
+
 
         # enddic={}
         # start=time.time()
@@ -110,5 +115,16 @@ if __name__ == '__main__':
         #     iterations +=1
         # print(time.time()-start)
         # print(enddic)
-
-
+        resultdic['Iteration']=iterations
+        resultdic['Time']=times
+        resultdic['Movements']=results
+        resultdic['Algorithm']=algo
+        df=pd.DataFrame.from_dict(resultdic)
+        df['Avg Move']=df.groupby('Algorithm')['Movements'].transform('mean').round().astype(int)
+        df['Avg Time']=df.groupby('Algorithm')['Time'].transform('mean').round(2)
+        print(df)
+        fig = px.histogram(df[['Movements','Algorithm']], x="Algorithm", y="Movements", histfunc="avg")
+        fig.show()
+        fig = px.histogram(df[['Time','Algorithm']], x="Algorithm", y="Time", histfunc="avg")
+        fig.show()
+        
