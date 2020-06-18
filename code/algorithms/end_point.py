@@ -1,5 +1,4 @@
 from numpy import random
-from .random_algorithm import randy
 import csv
 import random
 import copy
@@ -17,18 +16,15 @@ class End_point():
         # Copy of the main game instance
         self.instance_copy = copy.deepcopy(inst, self.cars)
 
-        # # print to check
         self.empty_board = self.instance_copy.create_board()
         # print(self.instance_copy.load_board(empty_board))
 
         self.border = self.instance_copy.dimension + 1
 
-        # print(f"border: {self.border}")
-        #self.car = input("Which car?\n").upper()
-        # print()
         
     def random_run(self, threshold):
-        threshold = threshold
+        # combines the end point algorithm with the random algorithm based on a threshold value
+        threshold = float(threshold)
 
         value = 0
 
@@ -40,7 +36,17 @@ class End_point():
                 self.single_run()
             else:
                 print("use random")
-                randy(self.instance_copy, self.cars)
+                randomcar = random.choice(list(self.cars))
+
+                movementspace = self.instance_copy.check_space(randomcar)
+
+                randommovement = random.choice(movementspace)
+
+                if self.instance_copy.move(randomcar, randommovement):
+                    # Reload board
+                    empty_board = instance_copy.create_board()
+                    result=instance_copy.load_board(empty_board)
+
                 self.movements += 1
             
             value = random.uniform(0, 1)
@@ -149,6 +155,8 @@ class End_point():
             blocker_copy = blocker.copy()
             # print(f"cars that should be skipped:  {checked_cars}")
 
+            # HIER HOORT X NIET IN TE KOMEN ALS AUTO OMDAT IE GEEN TUPLE RETURNED
+            # DUS KAN DE LOOP ER OOK NIET OVERHEEN ITEREREN
             for cars in blocker_copy.values():
                 for car in cars:            
                     if car == "edge" or car == True:

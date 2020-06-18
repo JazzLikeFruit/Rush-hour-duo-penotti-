@@ -62,6 +62,12 @@ if __name__ == '__main__':
         print(result[1])
     elif inputalgorithm == '4':
         threshold = input("how often should end-point be used?\nenter value between 0-1\n")
+        while True:
+            if float(threshold) > 1 or float(threshold) < 0:
+                threshold = input("choose a number between 0-1\n")
+            if float(threshold) < 1 and float(threshold) > 0:
+                break
+    
         ep = end_point.End_point(instance, cardic)
         ep.random_run(threshold)
         print(result[0])
