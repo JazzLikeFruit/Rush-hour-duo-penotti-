@@ -2,19 +2,41 @@ from code.algorithms import random_algorithm, unique_moves, short_path, end_poin
 from code.classes import cars, board
 from numpy import random
 import csv
+import time
+import plotly.express as px
+import pandas as pd
 
 if __name__ == '__main__':
-    datafile = "data/Rushhour6x6_1.csv"
+    print("\nRUSH HOUR - Duo Penotti\n")
+    game = input("select game:\n- 1 6x6\n- 2 6x6\n- 3 6x6\n- 4 9x9\n- 5 9x9\n- 6 9x9\n- 7 12x12\n")
+    if game == "1":
+        datafile = "data/Rushhour6x6_1.csv"
+    elif game == "2":
+        datafile = "data/Rushhour6x6_2.csv"
+    elif game == "3":
+        datafile = "data/Rushhour6x6_3.csv"
+    elif game == "4":
+        datafile = "data/Rushhour9x9_4.csv"
+    elif game == "5":
+        datafile = "data/Rushhour9x9_5.csv"
+    elif game == "6":
+        datafile = "data/Rushhour9x9_6.csv"
+    elif game == "7":
+        datafile = "data/Rushhour12x12_7.csv"
+    else:
+        print("input invalid")
+        raise SystemExit
+    
     instance = board.Board(datafile)
     empty_board = instance.create_board()
     cardic = instance.load_cars(datafile)
     #records = []
-    print("\nRUSH HOUR - Duo Penotti\n")
+    
     print(instance.load_board(empty_board))
     print("\n====================================\n")
-    print("Choose an alogithm to solve the puzzel with by typing the number :")
-    print("- 1 Random Algorithm\n- 2 Unique moves Algorithm\n- 3 Optimalised moves Algorithm\n- 4 End Point Algorithm")
-    algorithms={'1':'Random Algorithm', '2':'Unique moves Algorithm', '3':'Optimalised moves Algorithm', '4':'End Point Algorithm', '5':'Sample of all algorithms'}
+    print("Choose an algorithm to solve the puzzel with by typing the number :")
+    print("- 1 Random Algorithm\n- 2 Unique moves Algorithm\n- 3 Optimized moves Algorithm\n- 4 End Point Algorithm")
+    algorithms={'1':'Random Algorithm', '2':'Unique moves Algorithm', '3':'Optimized moves Algorithm', '4':'End Point Algorithm', '5':'Sample of all algorithms'}
     while True:
         print("\nEnter your choice:")
         inputalgorithm=input().lower()
@@ -23,18 +45,71 @@ if __name__ == '__main__':
             for algo in algorithms:
                 print (algo)
         else:
-            print('Loading', algorithms[inputalgorithm], '...')
+            print('\nLoading', algorithms[inputalgorithm], '...\n')
             break
 
 
     if inputalgorithm == '1':
-        random_algorithm.randy(instance, cardic)
+        result=random_algorithm.randy(instance, cardic)
+        print(result[0])
+        print(result[1])
     elif inputalgorithm == '2':
-        unique_moves.unique(instance, cardic)
+        result=unique_moves.unique(instance, cardic)
+        print(result[0])
+        print(result[1])
     elif inputalgorithm == '3':
-        short_path.unique(instance, cardic)
+        result=short_path.unique(instance, cardic)
+        print(result[0])
+        print(result[1])
     elif inputalgorithm == '4':
-        end_point.End_point(instance, cardic)
+        ep = end_point.End_point(instance, cardic)
+        ep.run()
+        print(result[0])
+        print(result[1])
+
     elif inputalgorithm == '5':
         #optie om alle algoritmes x aantal keer te laten draaien en de data te verzmalen in een diagram / csv
-        pass  
+        iterations=1
+
+        randdic={}
+        start=time.time()
+        while  iterations < 6:
+            startiteration=time.time()
+            result=random_algorithm.randy(instance, cardic)
+            randdic[iterations]=(result[0],time.time()-startiteration)
+            iterations +=1
+        print(time.time()-start)
+        print(randdic)
+
+        uniquedic={}
+        start=time.time()
+        while  iterations < 11:
+            startiteration=time.time()
+            result=unique_moves.unique(instance, cardic)
+            uniquedic[iterations]=(result[0],time.time()-startiteration)
+            iterations+=1
+        print(time.time()-start)
+        print(uniquedic)
+
+        shortdic={}
+        start=time.time()
+        while  iterations < 16:
+            startiteration=time.time()
+            result=short_path.unique(instance, cardic)
+            shortdic[iterations]=(result[0],time.time()-startiteration)
+            iterations +=1
+        print(time.time()-start)
+        print(shortdic)
+
+        # enddic={}
+        # start=time.time()
+        # while  iterations < 21:
+        #     startiteration=time.time()
+        #     ep = end_point.End_point(instance, cardic)
+        #     result=ep.run()
+        #     enddic[iterations]=(result[0],time.time()-startiteration)
+        #     iterations +=1
+        # print(time.time()-start)
+        # print(enddic)
+
+

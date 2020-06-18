@@ -66,7 +66,6 @@ def unique(inst, cars):
             save_board(instance_copy)
     instance_copy.car_output()
     empty_saves(instance_copy)
-    print(result)
-    return print(f"Oplossing met geoptimaliseerd archief {movements} steps.")
+    return (movements, result)
     
 

@@ -34,9 +34,9 @@ def randy(inst, cars):
 
             # Reload board
             empty_board = instance_copy.create_board()
-            instance_copy.load_board(empty_board)
+            result=instance_copy.load_board(empty_board)
 
     instance_copy.car_output()
     empty_board = instance_copy.create_board()
 
-    return print("Random oplossing in", movements, "steps.")
+    return (movements,result)

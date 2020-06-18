@@ -9,7 +9,6 @@ Algorithm that forces unique configurations on every turn.
 
 
 def unique(inst, cars):
-
     start=time.time()
     # Copy of the main game instance
     instance_copy = copy.deepcopy(inst)
@@ -27,6 +26,7 @@ def unique(inst, cars):
         return instance_copy.version
     
     def empty_saves(instance_copy):
+        # Empties the saves dictionary
         instance_copy.version.clear()
         return instance_copy.version
 
@@ -50,8 +50,10 @@ def unique(inst, cars):
 
         # Choose a move randomly
         randommovement = random.choice(movementspace)
-        # Perform movement if this is possible
+        
+        # Check if move doesn't colide with other cars
         if instance_copy.move(randomcar, randommovement):
+            #Check if move leads to a configuration that has been seen before
             if check_move(instance_copy):
                 # Count movements made
                 movements += 1
@@ -59,12 +61,13 @@ def unique(inst, cars):
                 save_board(instance_copy)
                 empty_board = instance_copy.create_board()
                 result=instance_copy.load_board(empty_board)
-
+            #If the move was valid (and therefore excecuted) but the configuration has been seen before the movement is reverted
             else:
                 instance_copy.move(randomcar, -randommovement)
                 empty_board = instance_copy.create_board()
                 result=instance_copy.load_board(empty_board)
-        elif time.time()-start > 0.03:
+        #If producing a result has been tried for more than 0.1s the function is reinitated, because it's very likely that there is no new unique move to be made
+        elif time.time()-start > 0.5:
             start=time.time()
             empty_saves(instance_copy)
             return unique(inst, cars)
@@ -72,7 +75,6 @@ def unique(inst, cars):
             
     instance_copy.car_output()
     empty_saves(instance_copy)
-    print(result)
-    return print(f"Oplossing met archief in {movements} steps.")
+    return (movements, result)
     
 
