@@ -62,7 +62,7 @@ if __name__ == '__main__':
         print(result[1])
     elif inputalgorithm == '4':
         ep = end_point.End_point(instance, cardic)
-        ep.run()
+        ep.single_run()
         print(result[0])
         print(result[1])
 
