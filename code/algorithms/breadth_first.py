@@ -15,13 +15,13 @@ class Breathfirst():
         self.cars = carslist
 
         self.queue = []
-        
 
     # gets next state in queue
+
     def get_next_state(self):
         return self.queue.pop(0)
-    
-    # Load children of current state 
+
+    # Load children of current state
     def build_children(self, instance, initial_movement):
         move_list = []
 
@@ -35,10 +35,10 @@ class Breathfirst():
         # Add each possible movement to a different list with initial movement
         for movement in posibilities:
 
-            # Copy list with initial movement 
+            # Copy list with initial movement
             list = copy.deepcopy(move_list)
 
-            # Add one of the possible movements 
+            # Add one of the possible movements
             list.append(movement)
 
             # Add list to queue
@@ -47,7 +47,7 @@ class Breathfirst():
     # Runs the algorithm
     def run(self):
 
-        # Count runtime 
+        # Count runtime
         begin_time = datetime.datetime.now()
 
         # Get possible movements for first board
@@ -73,7 +73,7 @@ class Breathfirst():
                 instance.move(move[-2], move[-1])
                 empty_board = instance.create_board()
                 instance.load_board(empty_board)
-                count += 1
+                count += abs(move[-1])
 
             # Check win
             if instance.check_win():
