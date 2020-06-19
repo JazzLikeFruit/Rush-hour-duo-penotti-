@@ -67,7 +67,7 @@ def unique(inst, cars):
                 empty_board = instance_copy.create_board()
                 result=instance_copy.load_board(empty_board)
         #If producing a result has been tried for more than 0.1s the function is reinitated, because it's very likely that there is no new unique move to be made
-        elif time.time()-start > 0.5:
+        elif time.time()-start > 0.2:
             start=time.time()
             empty_saves(instance_copy)
             return unique(inst, cars)

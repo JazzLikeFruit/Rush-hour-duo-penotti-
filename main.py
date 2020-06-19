@@ -23,57 +23,7 @@ if __name__ == '__main__':
         datafile = "data/Rushhour9x9_6.csv"
     elif game == "7":
         datafile = "data/Rushhour12x12_7.csv"
-    else:
-        print("input invalid")
-        raise SystemExit
-    
-    instance = board.Board(datafile)
-    empty_board = instance.create_board()
-    cardic = instance.load_cars(datafile)
-    #records = []
-    
-    print(instance.load_board(empty_board))
-    print("\n====================================\n")
-    print("Choose an algorithm to solve the puzzel with by typing the number :")
-    print("- 1 Random Algorithm\n- 2 Unique moves Algorithm\n- 3 Optimized moves Algorithm\n- 4 End Point Algorithm")
-    algorithms={'1':'Random Algorithm', '2':'Unique moves Algorithm', '3':'Optimized moves Algorithm', '4':'End Point Algorithm', '5':'Sample of all algorithms'}
-    while True:
-
-        print("\nEnter your choice:")
-        inputalgorithm = input().lower()
-        if inputalgorithm not in algorithms:
-            print('Incorrect algorithm select one of the following: ')
-
-        else:
-            print('\nLoading', algorithms[inputalgorithm], '...\n')
-            break
-
-    if inputalgorithm == '1':
-        result=random_algorithm.randy(instance, cardic)
-        print(result[0])
-        print(result[1])
-    elif inputalgorithm == '2':
-        result=unique_moves.unique(instance, cardic)
-        print(result[0])
-        print(result[1])
-    elif inputalgorithm == '3':
-        result=short_path.unique(instance, cardic)
-        print(result[0])
-        print(result[1])
-    elif inputalgorithm == '4':
-        threshold = input("how often should end-point be used?\nenter value between 0-1\n")
-        while True:
-            if float(threshold) > 1 or float(threshold) < 0:
-                threshold = input("choose a number between 0-1\n")
-            if float(threshold) < 1 and float(threshold) > 0:
-                break
-    
-        ep = end_point.End_point(instance, cardic)
-        ep.random_run(threshold)
-        print(result[0])
-        print(result[1])
-
-    elif inputalgorithm == '5':
+    elif game == "All":
         #optie om alle algoritmes x aantal keer te laten draaien en de data te verzmalen in een diagram / csv
         iterations=[]
         times=[]
@@ -134,4 +84,55 @@ if __name__ == '__main__':
         fig.show()
         fig = px.histogram(df[['Time','Algorithm']], x="Algorithm", y="Time", histfunc="avg")
         fig.show()
+    else:
+        print("input invalid")
+        raise SystemExit
+    
+    instance = board.Board(datafile)
+    empty_board = instance.create_board()
+    cardic = instance.load_cars(datafile)
+    #records = []
+    
+    print(instance.load_board(empty_board))
+    print("\n====================================\n")
+    print("Choose an algorithm to solve the puzzel with by typing the number :")
+    print("- 1 Random Algorithm\n- 2 Unique moves Algorithm\n- 3 Optimized moves Algorithm\n- 4 End Point Algorithm")
+    algorithms={'1':'Random Algorithm', '2':'Unique moves Algorithm', '3':'Optimized moves Algorithm', '4':'End Point Algorithm', '5':'Sample of all algorithms'}
+    while True:
+
+        print("\nEnter your choice:")
+        inputalgorithm = input().lower()
+        if inputalgorithm not in algorithms:
+            print('Incorrect algorithm select one of the following: ')
+
+        else:
+            print('\nLoading', algorithms[inputalgorithm], '...\n')
+            break
+
+    if inputalgorithm == '1':
+        result=random_algorithm.randy(instance, cardic)
+        print(result[0])
+        print(result[1])
+    elif inputalgorithm == '2':
+        result=unique_moves.unique(instance, cardic)
+        print(result[0])
+        print(result[1])
+    elif inputalgorithm == '3':
+        result=short_path.unique(instance, cardic)
+        print(result[0])
+        print(result[1])
+    elif inputalgorithm == '4':
+        threshold = input("how often should end-point be used?\nenter value between 0-1\n")
+        while True:
+            if float(threshold) > 1 or float(threshold) < 0:
+                threshold = input("choose a number between 0-1\n")
+            if float(threshold) < 1 and float(threshold) > 0:
+                break
+    
+        ep = end_point.End_point(instance, cardic)
+        ep.random_run(threshold)
+        print(result[0])
+        print(result[1])
+
+
         

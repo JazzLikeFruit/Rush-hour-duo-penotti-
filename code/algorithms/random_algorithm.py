@@ -25,17 +25,16 @@ def randy(inst, cars):
 
         # Choose a move randomly
         randommovement = random.choice(movementspace)
-
+        # if randomcar =='B':
+        #     print(randomcar,movementspace, randommovement)
         # Perform movement if this is possible
         if instance_copy.move(randomcar, randommovement):
-
             # Count movements made
             movements += 1
 
             # Reload board
             empty_board = instance_copy.create_board()
             result=instance_copy.load_board(empty_board)
-
     instance_copy.car_output()
     empty_board = instance_copy.create_board()
 
