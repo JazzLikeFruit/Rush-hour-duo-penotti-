@@ -11,6 +11,7 @@ class BreathFirst_P(BreathFirst):
     """
 
     def run(self):
+        start_time = time.time()
 
         # List of visited boards
         board_list = []
@@ -73,6 +74,8 @@ class BreathFirst_P(BreathFirst):
                 if instance.check_win():
 
                     # Create a new board
+                    print("--- %s seconds ---" % (time.time() - start_time))
+
                     empty_board = instance.create_board()
                     return(move_count, instance.load_board(empty_board))
 

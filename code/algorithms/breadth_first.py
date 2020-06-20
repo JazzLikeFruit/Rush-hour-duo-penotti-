@@ -81,4 +81,5 @@ class BreathFirst():
 
             else:
                 # Get childeren of current board
+
                 self.build_children(instance, movement)
