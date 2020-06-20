@@ -109,6 +109,7 @@ class Board():
                 for x in range(start, end, step):
                     if self.board[const_y][x] != "0":
                         return False
+
             return True
 
         elif self.cars[car_key].orientation == "V":
@@ -121,18 +122,17 @@ class Board():
                 start = start_y
                 end = end_y
 
-                if self.cars[car_key].length == 3:
-                    start += 1
-                    end += 1
 
                 for y in range(start + 1, end + 1, step):
                     if self.board[y][const_x] != "0":
                         return False
 
+            #ik heb hier aangepast dat de start en eind positie verminderd wordt met de lengte van de auto om te voorkomen dat hij zichzelf checkt
             else:
-                for y in range(start_y - 2, end_y - 2, -step):
+                for y in range(start_y - self.cars[car_key].length, end_y - self.cars[car_key].length, -step):
                     if self.board[y][const_x] != "0":
                         return False
+
             return True
         return False
 
