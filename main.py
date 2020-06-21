@@ -5,7 +5,6 @@ import csv
 import time
 import plotly.express as px
 import pandas as pd
-import cProfile
 
 if __name__ == '__main__':
     print("\nRUSH HOUR - Duo Penotti\n")
@@ -134,7 +133,7 @@ if __name__ == '__main__':
         while True:
             if float(threshold) > 1 or float(threshold) < 0:
                 threshold = input("choose a number between 0-1\n")
-            if float(threshold) <= 1 and float(threshold) >= 0:
+            if float(threshold) < 1 and float(threshold) > 0:
                 break
         ep = end_point.End_point(instance, cardic)
         ep.random_run(threshold)
@@ -145,7 +144,7 @@ if __name__ == '__main__':
 
     elif inputalgorithm == '7':
         bfp = breadthfirst_prooning.BreathFirst_P(instance)
-        cProfile.run('bfp.run()')
+        result = bfp.run()
 
     print(result[0])
     print(result[1])

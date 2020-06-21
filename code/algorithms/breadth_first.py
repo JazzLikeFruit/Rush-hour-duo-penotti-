@@ -65,7 +65,7 @@ class BreathFirst():
 
             instance = copy.deepcopy(self.instance_copy)
 
-            count = 0
+            move_count = 0
 
             # get next movement from queue
             movement = self.queue.get()
@@ -86,7 +86,7 @@ class BreathFirst():
             # Check win
             if instance.check_win():
                 empty_board = instance.create_board()
-                return (count, instance.load_board(empty_board))
+                return (move_count, instance.load_board(empty_board))
 
             else:
                 # Get childeren of current board
