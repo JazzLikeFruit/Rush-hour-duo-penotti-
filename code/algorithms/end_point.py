@@ -1,5 +1,4 @@
 from numpy import random
-import csv
 import random
 import copy
 """
@@ -13,7 +12,6 @@ class End_point():
         self.movements = 0
         self.cars = cars
         self.carlist = list(self.cars)
-        print(f"car list 2  = {self.carlist}")
 
         # Copy the main game instance
         self.instance_copy = copy.deepcopy(inst, self.cars)
