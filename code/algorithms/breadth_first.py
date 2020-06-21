@@ -1,6 +1,7 @@
 import copy
 import time
 import queue
+import _pickle as cPickle
 
 
 class BreathFirst():
@@ -8,11 +9,19 @@ class BreathFirst():
     A Breath First algorithm that finds the solution with the least ammount of steps.
     """
 
+    def make_move(self, instance, car, movement):
+        if instance.cars[car].orientation == 'H':
+            instance.cars[car].row = instance.cars[car].row + movement
+
+        if instance.cars[car].orientation == 'V':
+            instance.cars[car].col = instance.cars[car].col - movement
+
     def __init__(self, instance):
 
         # Make Copy of instance
         self.instance_copy = instance
 
+        # Define the queue
         self.queue = queue.Queue()
 
     # Load children of current state
@@ -31,7 +40,7 @@ class BreathFirst():
             for movement in posibilities:
 
                 # Copy list with initial movement
-                list = copy.deepcopy(move_list)
+                list = cPickle.loads(cPickle.dumps(move_list, -1))
 
                 # Add one of the possible movements
                 list.append(movement)
@@ -64,15 +73,15 @@ class BreathFirst():
             # Make movement using tuple
             for move in movement:
 
-                # Plot tuple for move
-                instance.move(move[-2], move[-1])
+                # Make movement
+                self.make_move(instance, move[-2], move[-1])
 
-                # Reload board
-                empty_board = instance.create_board()
-                instance.load_board(empty_board)
+                # Add movement made by the car to the move_count
+                move_count += abs(move[-1])
 
-                # Count movements
-                count += abs(move[-1])
+            # Load new board
+            empty_board = instance.create_board()
+            instance.load_board(empty_board)
 
             # Check win
             if instance.check_win():
@@ -81,5 +90,4 @@ class BreathFirst():
 
             else:
                 # Get childeren of current board
-
                 self.build_children(instance, movement)

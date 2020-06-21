@@ -1,6 +1,6 @@
 import copy
 import time
-
+import _pickle as cPickle
 from .breadth_first import BreathFirst
 
 
@@ -32,7 +32,7 @@ class BreathFirst_P(BreathFirst):
         while True:
 
             # Start with new board
-            instance = copy.deepcopy(self.instance_copy)
+            instance = cPickle.loads(cPickle.dumps(self.instance_copy, -1))
 
             # Keep count of each movement made by car
             move_count = 0
@@ -51,11 +51,7 @@ class BreathFirst_P(BreathFirst):
                 car_dict[move[-2]] = car_dict[move[-2]] + move[-1]
 
                 # Make movement
-                instance.move(move[-2], move[-1])
-
-                # Load new board
-                empty_board = instance.create_board()
-                instance.load_board(empty_board)
+                self.make_move(instance, move[-2], move[-1])
 
                 # Add movement made by the car to the move_count
                 move_count += abs(move[-1])
@@ -69,6 +65,10 @@ class BreathFirst_P(BreathFirst):
 
                 # Add car_dict to the list of already seen boards
                 board_list.append(dict(car_dict))
+
+                # Load new board
+                empty_board = instance.create_board()
+                instance.load_board(empty_board)
 
                 # Check win
                 if instance.check_win():

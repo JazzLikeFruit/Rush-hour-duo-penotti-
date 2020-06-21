@@ -5,6 +5,7 @@ import csv
 import time
 import plotly.express as px
 import pandas as pd
+import cProfile
 
 if __name__ == '__main__':
     print("\nRUSH HOUR - Duo Penotti\n")
@@ -144,7 +145,7 @@ if __name__ == '__main__':
 
     elif inputalgorithm == '7':
         bfp = breadthfirst_prooning.BreathFirst_P(instance)
-        result = bfp.run()
+        cProfile.run('bfp.run()')
 
     print(result[0])
     print(result[1])

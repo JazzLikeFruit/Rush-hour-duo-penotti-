@@ -37,15 +37,6 @@ class Board():
         boarddummy = np.zeros(
             (self.dimension + 2, self.dimension + 2), int).astype(str)
 
-        # for x in range(len(boarddummy[0])):
-        #     boarddummy[x][0] = str(x)
-        #     boarddummy[x][-1] = str(x)
-
-        # for y in range(len(boarddummy[0])):  
-        #     boarddummy[0][y] = '{}'.format(y)
-        #     boarddummy[-1][y] = '{}'.format(y)
-
-
         for x in range(len(boarddummy[0])):
             boarddummy[x][0] = '|'
             boarddummy[x][-1] = '|'
@@ -87,7 +78,6 @@ class Board():
         return self.board
 
     def check_move(self, car_key, blocks):
-        step = 1
 
         # moves the car along the number of blocks depending on orientation
         if self.cars[car_key].orientation == "H":
@@ -98,7 +88,7 @@ class Board():
             # determine if the car moves in positive or negative direction
             if blocks < 0:
 
-                for x in range(start_x - 1, end_x - 1, -step):
+                for x in range(start_x - 1, end_x - 1, -1):
                     if self.board[const_y][x] != "0":
                         return False
             else:
@@ -106,7 +96,7 @@ class Board():
                 start = start_x + self.cars[car_key].length
                 end = end_x + self.cars[car_key].length
 
-                for x in range(start, end, step):
+                for x in range(start, end):
                     if self.board[const_y][x] != "0":
                         return False
 
@@ -122,14 +112,13 @@ class Board():
                 start = start_y
                 end = end_y
 
-
-                for y in range(start + 1, end + 1, step):
+                for y in range(start + 1, end + 1):
                     if self.board[y][const_x] != "0":
                         return False
 
-            #ik heb hier aangepast dat de start en eind positie verminderd wordt met de lengte van de auto om te voorkomen dat hij zichzelf checkt
+            # ik heb hier aangepast dat de start en eind positie verminderd wordt met de lengte van de auto om te voorkomen dat hij zichzelf checkt
             else:
-                for y in range(start_y - self.cars[car_key].length, end_y - self.cars[car_key].length, -step):
+                for y in range(start_y - self.cars[car_key].length, end_y - self.cars[car_key].length, -1):
                     if self.board[y][const_x] != "0":
                         return False
 
@@ -137,61 +126,17 @@ class Board():
         return False
 
     def move(self, car_key, blocks):
-        step = 1
 
-        # moves the car along the number of blocks depending on orientation
-        if self.cars[car_key].orientation == "H":
-            const_y = self.cars[car_key].col
-            end_x = self.cars[car_key].row + blocks
-            start_x = self.cars[car_key].row
+        if self.check_move(car_key, blocks):
+            if self.cars[car_key].orientation == 'H':
+                self.cars[car_key].row = self.cars[car_key].row + blocks
+                self.cars[car_key].block_count += blocks
+                return True
 
-            # determine if the car moves in positive or negative direction
-            if blocks < 0:
-
-                for x in range(start_x - 1, end_x - 1, -step):
-                    if self.board[const_y][x] != "0":
-                        return False
-            else:
-
-                start = start_x + self.cars[car_key].length
-                end = end_x + self.cars[car_key].length
-
-                for x in range(start, end, step):
-                    if self.board[const_y][x] != "0":
-                        return False
-
-            self.cars[car_key].row = end_x
-
-            self.cars[car_key].block_count += blocks
-            return True
-
-        elif self.cars[car_key].orientation == "V":
-            const_x = self.cars[car_key].row
-            start_y = self.cars[car_key].col
-            end_y = self.cars[car_key].col - blocks
-
-            if blocks < 0:
-                end_y = self.cars[car_key].col + -(blocks)
-                start = start_y
-                end = end_y
-                #dit blok heb ik weggehaald omdat dit voorkwam dat de verticale vrachtwagens naar beneden gingen
-                # if self.cars[car_key].length == 3:
-                #     start += 1
-                #     end += 1
-
-                for y in range(start + 1, end + 1, step):
-                    if self.board[y][const_x] != "0":
-                        return False
-
-            #ik heb hier aangepast dat de start en eind positie verminderd wordt met de lengte van de auto om te voorkomen dat hij zichzelf checkt
-            else:
-                for y in range(start_y - self.cars[car_key].length, end_y - self.cars[car_key].length, -step):
-                    if self.board[y][const_x] != "0":
-                        return False
-
-            self.cars[car_key].col = end_y
-            self.cars[car_key].block_count += blocks
-            return True
+            if self.cars[car_key].orientation == 'V':
+                self.cars[car_key].col = self.cars[car_key].col - blocks
+                self.cars[car_key].block_count += blocks
+                return True
         return False
 
     def check_space(self, car_key):
@@ -201,7 +146,7 @@ class Board():
                 front = self.dimension - self.cars[car_key].row
                 behind = -(self.cars[car_key].row) + 1
                 output = [x for x in range(behind, front-1) if x != 0]
-                return output                
+                return output
             else:
                 front = self.dimension - self.cars[car_key].row
                 behind = -(self.cars[car_key].row) + 1
@@ -221,13 +166,11 @@ class Board():
                 return output
 
     def check_win(self):
-        # checks if the game is finished by determining the winning position and the position of car X
 
         # check if car X is placed in winning position
         if self.cars["X"].row == self.win_location or self.move("X", self.win_location - self.cars["X"].row):
             return True
-        else:
-            return False
+        return False
 
     def car_output(self):
         # generates output for check50 after a game is finished
@@ -262,7 +205,6 @@ class Board():
         for key in self.cars:
             move_list = self.check_space(key)
             for move in move_list:
-
                 if self.check_move(key, move):
                     tuple = (key, move)
                     possibilities.append(tuple)
