@@ -102,7 +102,7 @@ class Board():
 
             return True
 
-        elif self.cars[car_key].orientation == "V":
+        else:
             const_x = self.cars[car_key].row
             start_y = self.cars[car_key].col
             end_y = self.cars[car_key].col - blocks
@@ -133,7 +133,7 @@ class Board():
                 self.cars[car_key].block_count += blocks
                 return True
 
-            if self.cars[car_key].orientation == 'V':
+            else:
                 self.cars[car_key].col = self.cars[car_key].col - blocks
                 self.cars[car_key].block_count += blocks
                 return True
@@ -153,7 +153,7 @@ class Board():
                 output = [x for x in range(behind, front) if x != 0]
                 return output
 
-        elif self.cars[car_key].orientation == "V":
+        else:
             if self.cars[car_key].length == 3:
                 front = (self.dimension + 1)-self.cars[car_key].col
                 behind = -(self.cars[car_key].col)+2
@@ -200,12 +200,16 @@ class Board():
         self.version.clear()
         return self.version
 
+    # Check the possible movements for a board
     def possible_movements(self):
         possibilities = []
+
+        # Loop through cars and add possible movements to list
         for key in self.cars:
-            move_list = self.check_space(key)
-            for move in move_list:
+
+            # Check every possible movement by car
+            for move in self.check_space(key):
                 if self.check_move(key, move):
-                    tuple = (key, move)
-                    possibilities.append(tuple)
+                    possibilities.append((key, move))
+
         return possibilities

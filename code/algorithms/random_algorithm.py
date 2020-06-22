@@ -32,5 +32,6 @@ def randy(inst, cars):
         # Reload board
         empty_board = instance_copy.create_board()
         result = instance_copy.load_board(empty_board)
+        
     instance_copy.car_output()
     return (movements, result)

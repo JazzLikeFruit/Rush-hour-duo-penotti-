@@ -1,4 +1,3 @@
-import copy
 import time
 import queue
 import _pickle as cPickle
@@ -12,8 +11,7 @@ class BreathFirst():
     def make_move(self, instance, car, movement):
         if instance.cars[car].orientation == 'H':
             instance.cars[car].row = instance.cars[car].row + movement
-
-        if instance.cars[car].orientation == 'V':
+        else:
             instance.cars[car].col = instance.cars[car].col - movement
 
     def __init__(self, instance):
@@ -26,27 +24,18 @@ class BreathFirst():
 
     # Load children of current state
     def build_children(self, instance, initial_movement):
-        move_list = []
-
-        # Add initial moves to new moves list
-        for move in initial_movement:
-            move_list.append(move)
 
         # Get possible movements for the current board
-        posibilities = instance.possible_movements()
+        for movement in instance.possible_movements():
 
-        # Add each possible movement to a different list with initial movement
-        if posibilities:
-            for movement in posibilities:
+            # Copy list with initial movement
+            movements = list(initial_movement)
 
-                # Copy list with initial movement
-                list = cPickle.loads(cPickle.dumps(move_list, -1))
+            # Add one of the possible movements
+            movements.append(movement)
 
-                # Add one of the possible movements
-                list.append(movement)
-
-                # Add list to queue
-                self.queue.put(list)
+            # Add list to queue
+            self.queue.put(movements)
 
     # Runs the algorithm
     def run(self):
@@ -63,7 +52,7 @@ class BreathFirst():
 
         while True:
 
-            instance = copy.deepcopy(self.instance_copy)
+            instance = cPickle.loads(cPickle.dumps(self.instance_copy, -1))
 
             move_count = 0
 

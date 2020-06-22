@@ -7,8 +7,11 @@ import plotly.express as px
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import cProfile
+import re
 
-files=["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3.csv", "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv", "data/Rushhour12x12_7.csv"]
+files = ["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3.csv",
+         "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv", "data/Rushhour12x12_7.csv"]
 if __name__ == '__main__':
     print("\nRUSH HOUR - Duo Penotti\n")
     game = input(
@@ -33,13 +36,13 @@ if __name__ == '__main__':
         times = []
         results = []
         algo = []
-        df=pd.DataFrame()
+        df = pd.DataFrame()
         for boardfile in files:
             instance = board.Board(boardfile)
             empty_board = instance.create_board()
             cardic = instance.load_cars(boardfile)
             instance.load_board(empty_board)
-            
+
             resultdic = {}
             start = time.time()
             while len(iterations) < 6:
@@ -49,7 +52,7 @@ if __name__ == '__main__':
                 results.append(result[0])
                 algo.append('Random')
                 iterations.append(len(iterations)+1)
-            
+
             print('Random')
             uniquedic = {}
             start = time.time()
@@ -96,7 +99,7 @@ if __name__ == '__main__':
                 algo.append('Breadth Prune')
                 iterations.append(len(iterations)+1)
                 print(len(iterations)+1)
-            print ('Breadth Prune')  
+            print('Breadth Prune')
 
             # breadthdic = {}
             # start = time.time()
@@ -108,11 +111,10 @@ if __name__ == '__main__':
             #     results.append(result[0])
             #     algo.append('Breadth')
             #     iterations.append(len(iterations)+1)
-            
+
             # print ('Breadth')
 
-            
-            # bouwen van dictioanary en dataframe 
+            # bouwen van dictioanary en dataframe
             resultdic['Iteration'] = iterations
             resultdic['Time'] = times
             resultdic['Movements'] = results
@@ -120,18 +122,18 @@ if __name__ == '__main__':
             resultdic['Datafile'] = boardfile
             dfnew = pd.DataFrame.from_dict(resultdic)
             # berekenen van gemiddeldes
-            dfnew['Avg Move'] = dfnew.groupby(['Algorithm','Datafile'])['Movements'].transform(
+            dfnew['Avg Move'] = dfnew.groupby(['Algorithm', 'Datafile'])['Movements'].transform(
                 'mean').round().astype(int)
-            dfnew['Avg Time'] = dfnew.groupby(['Algorithm','Datafile'])[
+            dfnew['Avg Time'] = dfnew.groupby(['Algorithm', 'Datafile'])[
                 'Time'].transform('mean').round(2)
             df = df.append(dfnew)
         print(df)
-        #plotten
+        # plotten
         fig1 = px.histogram(df,
-                        x="Algorithm", y="Movements", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
+                            x="Algorithm", y="Movements", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
         fig1.show()
         fig2 = px.histogram(df,
-                        x="Algorithm", y="Time", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
+                            x="Algorithm", y="Time", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
         fig2.show()
     else:
         print("input invalid")
@@ -148,7 +150,7 @@ if __name__ == '__main__':
         print("Choose an algorithm to solve the puzzel with by typing the number :")
 
         algorithms = {'1': 'Random Algorithm', '2': 'Unique moves Algorithm',
-                    '3': 'Optimized moves Algorithm', '4': 'End Point Algorithm', '5': 'Breadth first algorithm', '6': 'Breadth first plus prooning'}
+                      '3': 'Optimized moves Algorithm', '4': 'End Point Algorithm', '5': 'Breadth first algorithm', '6': 'Breadth first plus prooning'}
 
         for alogrithm in algorithms:
             print(f"- {alogrithm}: {algorithms[alogrithm]}")
@@ -169,17 +171,17 @@ if __name__ == '__main__':
             result = random_algorithm.randy(instance, cardic)
             print(result[0])
             print(result[1])
-            
+
         elif inputalgorithm == '2':
             result = unique_moves.unique(instance, cardic)
             print(result[0])
             print(result[1])
-            
+
         elif inputalgorithm == '3':
             result = short_path.unique(instance, cardic)
             print(result[0])
             print(result[1])
-            
+
         elif inputalgorithm == '4':
             threshold = input(
                 "how often should end-point be used?\nenter value between 0-1\n")
@@ -189,20 +191,20 @@ if __name__ == '__main__':
                 if float(threshold) < 1 and float(threshold) > 0:
                     break
             ep = end_point.End_point(instance, cardic)
-            resutl=ep.random_run(threshold)
+            resutl = ep.random_run(threshold)
             print(result[0])
             print(result[1])
-            
-        elif inputalgorithm == '6':
+
+        elif inputalgorithm == '5':
             bf = breadth_first.BreathFirst(instance)
             result = bf.run()
             print(result[0])
             print(result[1])
-            
-        elif inputalgorithm == '7':
+
+        elif inputalgorithm == '6':
             bfp = breadthfirst_prooning.BreathFirst_P(instance)
-            result = bfp.run()
+            cProfile.run('bfp.run()')
+            # result = bfp.run()
 
             print(result[0])
             print(result[1])
-
