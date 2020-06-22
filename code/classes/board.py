@@ -68,7 +68,7 @@ class Board():
                     self.board[posx][posy +
                                      2] = self.board[posx][posy + 2].replace('0', key)
 
-            if self.cars[key].orientation == 'V':
+            else:
                 self.board[posx-1][posy] = self.board[posx -
                                                       1][posy].replace('0', key)
                 if self.cars[key].length == 3:
@@ -91,15 +91,14 @@ class Board():
                 for x in range(start_x - 1, end_x - 1, -1):
                     if self.board[const_y][x] != "0":
                         return False
-            else:
+                return True
 
-                start = start_x + self.cars[car_key].length
-                end = end_x + self.cars[car_key].length
+            start = start_x + self.cars[car_key].length
+            end = end_x + self.cars[car_key].length
 
-                for x in range(start, end):
-                    if self.board[const_y][x] != "0":
-                        return False
-
+            for x in range(start, end):
+                if self.board[const_y][x] != "0":
+                    return False
             return True
 
         else:
@@ -115,15 +114,13 @@ class Board():
                 for y in range(start + 1, end + 1):
                     if self.board[y][const_x] != "0":
                         return False
+                return True
 
             # ik heb hier aangepast dat de start en eind positie verminderd wordt met de lengte van de auto om te voorkomen dat hij zichzelf checkt
-            else:
-                for y in range(start_y - self.cars[car_key].length, end_y - self.cars[car_key].length, -1):
-                    if self.board[y][const_x] != "0":
-                        return False
-
+            for y in range(start_y - self.cars[car_key].length, end_y - self.cars[car_key].length, -1):
+                if self.board[y][const_x] != "0":
+                    return False
             return True
-        return False
 
     def move(self, car_key, blocks):
 
@@ -133,11 +130,9 @@ class Board():
                 self.cars[car_key].block_count += blocks
                 return True
 
-            else:
-                self.cars[car_key].col = self.cars[car_key].col - blocks
-                self.cars[car_key].block_count += blocks
-                return True
-        return False
+            self.cars[car_key].col = self.cars[car_key].col - blocks
+            self.cars[car_key].block_count += blocks
+            return True
 
     def check_space(self, car_key):
         # check which spaces are available to move in around the car
@@ -147,23 +142,22 @@ class Board():
                 behind = -(self.cars[car_key].row) + 1
                 output = [x for x in range(behind, front-1) if x != 0]
                 return output
-            else:
-                front = self.dimension - self.cars[car_key].row
-                behind = -(self.cars[car_key].row) + 1
-                output = [x for x in range(behind, front) if x != 0]
-                return output
 
-        else:
-            if self.cars[car_key].length == 3:
-                front = (self.dimension + 1)-self.cars[car_key].col
-                behind = -(self.cars[car_key].col)+2
-                output = [-(x) for x in range(behind+1, front) if x != 0]
-                return output
-            else:
-                front = (self.dimension + 1)-self.cars[car_key].col
-                behind = -(self.cars[car_key].col)+2
-                output = [-(x) for x in range(behind, front) if x != 0]
-                return output
+            front = self.dimension - self.cars[car_key].row
+            behind = -(self.cars[car_key].row) + 1
+            output = [x for x in range(behind, front) if x != 0]
+            return output
+
+        if self.cars[car_key].length == 3:
+            front = (self.dimension + 1)-self.cars[car_key].col
+            behind = -(self.cars[car_key].col)+2
+            output = [-(x) for x in range(behind+1, front) if x != 0]
+            return output
+
+        front = (self.dimension + 1)-self.cars[car_key].col
+        behind = -(self.cars[car_key].col)+2
+        output = [-(x) for x in range(behind, front) if x != 0]
+        return output
 
     def check_win(self):
 
