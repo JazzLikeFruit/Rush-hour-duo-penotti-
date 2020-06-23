@@ -14,7 +14,7 @@ De code is in dit project geschreven in python. In requirements.txt staan alle b
 
 ## Gebruik
 
-De spelborden kunnen worden opgelost door de volgende command te runnen: `python main.py`. Dit opent een interface waarin een spelbord en een algoritme gekozen kunnen worden om het spel mee op te lossen. Als het algoritme klaar is met runnen zal het winnende bord en het aantal stappen dat het over de oplossing deed weergegeven worden.
+De spelborden kunnen worden opgelost door de volgende command te runnen: `python main.py`. Dit opent een interface waarin een spelbord en een algoritme gekozen kunnen worden om het spel mee op te lossen. Als het algoritme klaar is met runnen zal het winnende bord en het aantal stappen dat het over de oplossing deed weergegeven worden. Als een van de eerste drie spelborden gekozen is, kan er als er gevraagd wordt naar het algoritme ook `all` als input gegeven worden, waarbij alle algoritmen uitgevoerd worden. Op het moment dat deze optie gekozen wordt bij een groter bord bestaat de kans dat het programma vastloopt.
 
 ## Structuur
 
@@ -22,13 +22,11 @@ De volgende lijst beschrijft de belangerijkste mappen en documenten binnen deze 
 - **code**  
     - **algorithms**  
         de folder algorithms bevat alle programma's met daarin de algoritmen die gebruikt kunnen worden om rush hour op te lossen  
-        - **breadth_first.py**  
-            breadth first gaat met de welbekende breadth first methode de mogelijke oplossingen door. Door de hoeveelheid geheugen die dit algoritme inneemt is het alleen functioneel om te gebruiken bij de 6x6 borden.  
         - **breadth_first_prooning.py**  
-            dit algoritme gaat op dezelfde manier te werk als het breadth first algoritme, maar deze zet alleen borden die nog niet zijn voorgekomen in de queue. Hierdoor is dit algoritme ook te gebruiken voor grotere borden.  
+            dit algoritme gaat op de welbekende breadth-first manier op zoek naar een oplossing. D.m.v. de pruning worden alleen borden die nog niet zijn voorgekomen in de queue gezet, wat de executie en de runtime sterk verbeterd vergeleken met een versie zonder pruning. Dit algoritme kan niet gebruikt worden voor spelborden hoger dan spelbord 4.
         - **end_point.py**  
             het end point algoritme begint met kijken of de rode auto geblokkeerd is door andere auto's. Als dit het geval is zoekt het algoritme door alle auto's heen die ertoe leiden dat de rode auto vast staat. De auto's die aan het eind van deze blokkade kunnen bewegen, worden dan weggeschoven, tot uiteindelijk de rode auto kan bewegen richting de uitgang.  
-            Door de deterministische natuur van dit algoritme is het nodig om te gebruiken in conjunctie met een random algoritme. De verhouding waarin deze gebruikt worden kan worden bepaald door een threshold waarde mee te geven als het algoritme wordt uitgevoerd, met een threshold van 0 betekenend dat alleen het random algoritme uitgevoerd wordt, en een threshold van 1 betekenend dat alleen het end point algoritme wordt uitgevoerd.  
+            Door de deterministische natuur van dit algoritme is het nodig om te gebruiken in conjunctie met een random algoritme. De verhouding waarin deze gebruikt worden kan worden bepaald door een threshold waarde mee te geven als het algoritme wordt uitgevoerd, met een threshold van 0 betekenend dat alleen het random algoritme uitgevoerd wordt, en een threshold van 1 betekenend dat alleen het end point algoritme wordt uitgevoerd. Vooralsnog lijkt een threshold van 0.7 voor de meest optimale oplossing te zorgen.  
         - **random_algorithm.py**  
             het random algoritme kiest een random auto en een random aantal stappen uit om de auto te verplaatsen, en voert deze stappen uit tot het spel gewonnen is.  
         - **short_path.py**  
@@ -50,7 +48,7 @@ De volgende lijst beschrijft de belangerijkste mappen en documenten binnen deze 
     dit programma bevat code om het endpoint algoritme in conjunctie met het random algoritme uit te voeren voor alle spelborden. Er wordt gevraagd om een threshold min en max als het programma gerund wordt, wat de range bepaald van de thresholds die gebruikt worden. Er wordt ook gevraagd om het aantal herhalingen per run dat uitgevoerd moet worden.  
 
 - **main.py**  
-    main.py bevat het programma waarin een spelbord en een algoritme gekozen kunnen worden om uit te voeren. Er verschijnt een menu waar eerst het spelbord gekozen kan worden, en daarna het algoritme om dit bord mee op te lossen.Als een van de eerste drie spelborden gekozen is, kan er als er gevraagd wordt naar het algoritme ook `all` als input gegeven worden, waarbij alle algoritmen uitgevoerd worden. Op het moment dat deze optie gekozen wordt bij een groter bord bestaat de kans dat het programma vastloopt. 
+    main.py bevat het programma waarin een spelbord en een algoritme gekozen kunnen worden om uit te voeren. Er verschijnt een menu waar eerst het spelbord gekozen kan worden, en daarna het algoritme om dit bord mee op te lossen. 
 
 ## Auteurs
 
