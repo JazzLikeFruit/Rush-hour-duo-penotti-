@@ -88,11 +88,7 @@ if __name__ == '__main__':
                 if float(threshold) < 1 and float(threshold) > 0:
                     break
             ep = end_point.End_point(instance, cardic)
-<<<<<<< HEAD
             result=ep.random_run(threshold)
-=======
-            resutl = ep.random_run(threshold)
->>>>>>> 24b0a02a469a2c449416342168fb08a3f2d40ad0
             print(result[0])
             print(result[1])
 
@@ -109,7 +105,6 @@ if __name__ == '__main__':
 
             print(result[0])
             print(result[1])
-<<<<<<< HEAD
         elif inputalgorithm =='all':
             times = []
             results = []
@@ -209,5 +204,3 @@ if __name__ == '__main__':
             fig2.show()
 
 
-=======
->>>>>>> 24b0a02a469a2c449416342168fb08a3f2d40ad0

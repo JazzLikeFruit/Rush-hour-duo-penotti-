@@ -34,7 +34,7 @@ if __name__ == '__main__':
     
     print("starting run...")
     # make instance for every board file
-    for boardfile in files:
+    for boardfile in files[:-1]:
 
         datafile = boardfile
         instance = board.Board(datafile)
@@ -87,21 +87,15 @@ if __name__ == '__main__':
 
     # hier ergens grafiek maken
     resultdic["Threshold"]=thresholdlist
-    resultdic["AVG"]=resultlist
+    resultdic["Average Movement"]=resultlist
     resultdic["Board"]=datafilelist
     resultdic["Repetitions"] = maxiterationslist
 
     dfend=pd.DataFrame.from_dict(resultdic)
     dfend.to_csv("dfendoutput.csv")
     fig = px.line(dfend,
-                    x="Threshold", y="AVG",  facet_col="Board", facet_col_wrap=4)
+                    x="Threshold", y="Average Movement",  facet_col="Board", facet_col_wrap=3)
     fig.show()
 
-        # write results to csv file
-        # with open('ep_optima.csv', mode='a') as opti:
-        #     optimum_writer = csv.writer(opti)
-        #     optimum_writer.writerow([datafile])
-        #     for threshold, result in avgresult.items():
-        #         optimum_writer.writerow([threshold, result])
 
         
