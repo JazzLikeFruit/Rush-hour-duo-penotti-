@@ -2,14 +2,15 @@ from numpy import random
 import csv
 import random
 import copy
+import _pickle as cPickle
 """
-Algorithm that forces unique configurations on every turn. 
+Algorithm that optimizes total movements based on previous boards. 
 """
 
 
-def unique(inst, cars):
+def short(inst, cars):
     # Copy of the main game instance
-    instance_copy = copy.deepcopy(inst)
+    instance_copy = cPickle.loads(cPickle.dumps(inst, -1))
 
     movements = 0
 
@@ -24,6 +25,7 @@ def unique(inst, cars):
         return instance_copy.version
     
     def empty_saves(instance_copy):
+        # clear the dictionary
         instance_copy.version.clear()
         return instance_copy.version
 
@@ -36,15 +38,14 @@ def unique(inst, cars):
             if instance_copy.version[board] == current:
                 for key in range(board, len(instance_copy.version)+1):
                     instance_copy.version.pop(key, None)
-                return True
+                return (True, len(instance_copy.version))
 
-        return True    
+        return [False] 
 
 
     # Run loop while game not winnable
-    while not instance_copy.check_win():
-        dupe=instance_copy
-        # Choose a car randomly
+    while not instance_copy.cars["X"].row == instance_copy.win_location:
+
         randomcar = random.choice(list(cars))
 
         # Check movable spaces of the car
@@ -52,18 +53,24 @@ def unique(inst, cars):
 
         # Choose a move randomly
         randommovement = random.choice(movementspace)
+        
+        if instance_copy.move(randomcar, randommovement):
 
-        # Perform movement if this is possible
-        if dupe.move(randomcar, randommovement) and check_move(instance_copy):
-            instance_copy.move(randomcar, randommovement)
-            
-            # Count movements made
-            movements += 1
+            # Check if move leads to a configuration that has been seen before
+            check=check_move(instance_copy)
 
-            # Reload board
-            empty_board = instance_copy.create_board()
-            result=instance_copy.load_board(empty_board)
-            save_board(instance_copy)
+            # if true reset the total movements
+            if check[0]:
+                movements = check[1]
+            # else add 1 to movements
+            else:
+                movements += 1
+        
+        # Reload board & save board
+        save_board(instance_copy)
+        empty_board = instance_copy.create_board()
+        result=instance_copy.load_board(empty_board)
+    
     instance_copy.car_output()
     empty_saves(instance_copy)
     return (movements, result)

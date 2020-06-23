@@ -17,21 +17,22 @@ def randy(inst, cars):
     # Run loop while game not winnable
     while not instance_copy.cars["X"].row == instance_copy.win_location:
 
+        # Select random car
+        randomcar = random.choice(list(cars))
+
         # Check movable spaces of the car
-        movement = instance_copy.possible_movements()
+        movementspace = instance_copy.check_space(randomcar)
 
         # Choose a move randomly
-        randommovement = random.choice(movement)
+        randommovement = random.choice(movementspace)
 
-        # Perform movement if this is possible
-        instance_copy.move(randommovement[-2], randommovement[-1])
+        if instance_copy.move(randomcar, randommovement):
+            # Count movements made
+            movements += 1
 
-        # Count movements made
-        movements += 1
-
-        # Reload board
-        empty_board = instance_copy.create_board()
-        result = instance_copy.load_board(empty_board)
+            # Reload board
+            empty_board = instance_copy.create_board()
+            result = instance_copy.load_board(empty_board)
         
     instance_copy.car_output()
     return (movements, result)

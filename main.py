@@ -9,11 +9,14 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import cProfile
 import re
+import pyfiglet
 
 files = ["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3.csv",
          "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv", "data/Rushhour12x12_7.csv"]
 if __name__ == '__main__':
+    # file selection
     print("\nRUSH HOUR - Duo Penotti\n")
+    print(pyfiglet.figlet_format('Rush Hour', font = 'slant'))
     game = input(
         "select game:\n- 1 6x6\n- 2 6x6\n- 3 6x6\n- 4 9x9\n- 5 9x9\n- 6 9x9\n- 7 12x12\n")
     if game == "1":
@@ -36,6 +39,7 @@ if __name__ == '__main__':
 
     if game.lower() != "all":
         print(f"Board {game} chosen")
+        # load chosen board
         instance = board.Board(datafile)
         empty_board = instance.create_board()
         cardic = instance.load_cars(datafile)
@@ -45,7 +49,7 @@ if __name__ == '__main__':
         print("Choose an algorithm to solve the puzzel with by typing the number :")
 
         algorithms = {'1': 'Random Algorithm', '2': 'Unique moves Algorithm',
-                      '3': 'Optimized moves Algorithm', '4': 'End Point Algorithm', '5': 'Breadth first algorithm', '6': 'Breadth first plus prooning'}
+                      '3': 'Optimized moves Algorithm', '4': 'End Point Algorithm', '5': 'Breadth first plus prooning', 'all': '5 runs of all algorithms inculding a visualisation'}
 
         for alogrithm in algorithms:
             print(f"- {alogrithm}: {algorithms[alogrithm]}")
@@ -54,10 +58,10 @@ if __name__ == '__main__':
 
             print("\nEnter your choice:")
             inputalgorithm = input().lower()
-            if inputalgorithm not in algorithms and inputalgorithm !='all':
+            if inputalgorithm not in algorithms:
                 print('Incorrect algorithm select one of the following: ')
 
-            elif inputalgorithm in algorithms:
+            elif inputalgorithm in algorithms and inputalgorithm != 'all':
 
                 print('\nLoading', algorithms[inputalgorithm], '...\n')
                 break
@@ -70,16 +74,21 @@ if __name__ == '__main__':
             print(result[1])
 
         elif inputalgorithm == '2':
-            result = unique_moves.unique(instance, cardic)
-            print(result[0])
-            print(result[1])
+            #try/except implemented because this function has a lot of recursion
+            try:
+                result = unique_moves.unique(instance, cardic)
+                print(result[0])
+                print(result[1])
+            except RecursionError as re:
+                print('Recursion depth reached, try again if you have faith but this algorithm struggles with large boards')
 
         elif inputalgorithm == '3':
-            result = short_path.unique(instance, cardic)
+            result = short_path.short(instance, cardic)
             print(result[0])
             print(result[1])
 
         elif inputalgorithm == '4':
+            # threshold for random movement can be manually selected
             threshold = input(
                 "how often should end-point be used?\nenter value between 0-1\n")
             while True:
@@ -93,114 +102,99 @@ if __name__ == '__main__':
             print(result[1])
 
         elif inputalgorithm == '5':
-            bf = breadth_first.BreathFirst(instance)
-            result = bf.run()
-            print(result[0])
-            print(result[1])
-
-        elif inputalgorithm == '6':
-            bfp = breadthfirst_prooning.BreathFirst_P(instance)
+            bfp = breadthfirst_prooning.BreathFirst_P(instance, cardic)
             # cProfile.run('bfp.run()')
             result = bfp.run()
 
             print(result[0])
             print(result[1])
         elif inputalgorithm =='all':
+            # automatically runnning multiple iterations of all functions (with some exceptions handled in a user friendly manner)
             times = []
             results = []
             algo = []
-            iterations = []
+            iterations = 0
             df=pd.DataFrame()
             resultdic = {}
             boardfile=datafile
-            while len(iterations) < 26:
+            while iterations < 21:
                 instance = board.Board(boardfile)
                 empty_board = instance.create_board()
                 cardic = instance.load_cars(boardfile)
                 instance.load_board(empty_board)
 
                 start = time.time()
-                if len(iterations) < 5:
+                if iterations < 5:
                     startiteration = time.time()
                     result = random_algorithm.randy(instance, cardic)
                     times.append(time.time()-startiteration)
                     results.append(result[0])
                     algo.append('Random')
-                    iterations.append(len(iterations)+1)
+                    iterations+=1
                     print('Random')
 
-                if len(iterations) < 10 and len(iterations) > 4:
+                if 4 < iterations < 10:
                     startiteration = time.time()
-                    result = unique_moves.unique(instance, cardic)
+                    result = short_path.short(instance, cardic)
                     times.append(time.time()-startiteration)
                     results.append(result[0])
-                    algo.append('Unique')
-                    iterations.append(len(iterations)+1)
-                    print('Unique')
+                    algo.append('Optimized')
+                    iterations+=1
+                    print('Optimized')
 
-                if len(iterations) < 15 and len(iterations) > 9:
+                if 9 < iterations < 15:
+                    try:
+                        startiteration = time.time()
+                        result = unique_moves.unique(instance, cardic)
+                        times.append(time.time()-startiteration)
+                        results.append(result[0])
+                        algo.append('Unique')
+                        iterations+=1
+                        print('Unique')                    
+                    except RecursionError as re:
+                        iterations=15
+                        print('Unique reached recursion depth and algorithm was skipped')                         
+                
+                
+                if 14 < iterations < 16 and datafile in files[:4]:
                     startiteration = time.time()
-                    result = short_path.unique(instance, cardic)
-                    times.append(time.time()-startiteration)
-                    results.append(result[0])
-                    algo.append('Short')
-                    iterations.append(len(iterations)+1)
-                    print('Short')
-
-                if len(iterations) < 20 and len(iterations) > 14:
-                    startiteration = time.time()
-                    ep = end_point.End_point(instance, cardic)
-                    result = ep.random_run(0.5)
-                    times.append(time.time()-startiteration)
-                    results.append(result[0])
-                    algo.append('End')
-                    iterations.append(len(iterations)+1)
-                    print('End')
-
-                if len(iterations) < 25 and len(iterations) > 19:
-                    startiteration = time.time()
-                    bfp = breadthfirst_prooning.BreathFirst_P(instance)
+                    bfp = breadthfirst_prooning.BreathFirst_P(instance, cardic)
                     result = bfp.run()
                     times.append(time.time()-startiteration)
                     results.append(result[0])
-                    algo.append('Breadth Prune')
-                    iterations.append(len(iterations)+1)
-                    print ('Breadth Prune')  
+                    algo.append('Breadth Pruned')
+                    iterations+=1
+                    print ('Breadth Pruned')
+                #prevent breadth first with prooning from running on the most difficult three boards
+                if 14 < iterations < 16 and datafile not in files[:4]:
+                    print ('This board has not been possible to solve with this algorithm thus far')
+                    iterations+=1   
 
-                # if len(iterations) < 31 and len(iterations) > 25:
-                #     startiteration = time.time()
-                #     bf = breadth_first.BreathFirst(instance)
-                #     result = bf.run()
-                #     times.append(time.time()-startiteration)
-                #     results.append(result[0])
-                #     algo.append('Breadth')
-                #     iterations.append(len(iterations)+1)
-                    
-                # print ('Breadth')
+                if 15 < iterations:
+                    startiteration = time.time()
+                    ep = end_point.End_point(instance, cardic)
+                    result = ep.random_run(0.7)
+                    times.append(time.time()-startiteration)
+                    results.append(result[0])
+                    algo.append('End')
+                    iterations+=1
+                    print('End')                   
 
                 
-            # bouwen van dictioanary en dataframe 
-            resultdic['Iteration'] = iterations
+            # building of dictionary and dataframe 
+            resultdic['Iteration'] = list(range(len(times)))
             resultdic['Time'] = times
             resultdic['Movements'] = results
             resultdic['Algorithm'] = algo
 
-            print(resultdic)
-
             dfnew = pd.DataFrame.from_dict(resultdic)
-                # berekenen van gemiddeldes
-                # dfnew['Avg Move'] = dfnew.groupby(['Algorithm','Datafile'])['Movements'].transform(
-                #     'mean').round().astype(int)
-                # dfnew['Avg Time'] = dfnew.groupby(['Algorithm','Datafile'])[
-                #     'Time'].transform('mean').round(2)
-                # df = df.append(dfnew)
-            dfnew.to_csv('df.csv')
-            # plotten
+
+            # plotting of the sample of algorithms
             fig1 = px.histogram(dfnew,
-                            x="Algorithm", y="Movements", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
+                            x="Algorithm", y="Movements", color="Algorithm", histfunc="avg")
             fig1.show()
             fig2 = px.histogram(dfnew,
-                            x="Algorithm", y="Time", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
+                            x="Algorithm", y="Time", color="Algorithm", histfunc="avg")
             fig2.show()
 
 
