@@ -24,7 +24,7 @@ De volgende lijst beschrijft de belangerijkste mappen en documenten binnen deze 
         de folder algorithms bevat alle programma's met daarin de algoritmen die gebruikt kunnen worden om rush hour op te lossen  
         - **breadth_first_prooning.py**  
             dit algoritme gaat op de welbekende breadth-first manier op zoek naar een oplossing. D.m.v. de pruning worden alleen borden die nog niet zijn voorgekomen in de queue gezet, wat de executie en de runtime sterk verbeterd vergeleken met een versie zonder pruning. Dit algoritme kan niet gebruikt worden voor spelborden hoger dan spelbord 4.
-        - **breath_first.py**
+        - **breadth_first.py** 
             deze file bevat een implementatie van de breadth-fist algoritme. De runtime van deze code is te langzaam om in een redelijke tijd met een oplossing voor de boarden t             komen. De eerste algoritme werd met behulp van deze code geschreven. 
         - **end_point.py**  
             het end point algoritme begint met kijken of de rode auto geblokkeerd is door andere auto's. Als dit het geval is zoekt het algoritme door alle auto's heen die ertoe leiden dat de rode auto vast staat. De auto's die aan het eind van deze blokkade kunnen bewegen, worden dan weggeschoven, tot uiteindelijk de rode auto kan bewegen richting de uitgang.  
