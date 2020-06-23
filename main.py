@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # file selection
     
     print(pyfiglet.figlet_format('Rush Hour', font = 'slant'))
-    print("\nDuo Penotti\n")
+    print("Duo Penotti\n")
     game = input(
         "select game:\n- 1 6x6\n- 2 6x6\n- 3 6x6\n- 4 9x9\n- 5 9x9\n- 6 9x9\n- 7 12x12\n")
     if game == "1":

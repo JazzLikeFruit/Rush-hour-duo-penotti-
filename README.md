@@ -30,7 +30,7 @@ De volgende lijst beschrijft de belangerijkste mappen en documenten binnen deze 
         - **random_algorithm.py**  
             het random algoritme kiest een random auto en een random aantal stappen uit om de auto te verplaatsen, en voert deze stappen uit tot het spel gewonnen is.  
         - **short_path.py**  
-            het short path algoritme slaat elke configuratie van het bord per stap op. Zodra een stap ertoe leidt dat het volledige bord weer op een eerdere configuratie uitkomt, wordt het spel teruggezet naar de eerste stap waar deze configuratie voor is gekomen.  
+            het short path algoritme slaat elke configuratie van het bord per stap op. Zodra een stap ertoe leidt dat het volledige bord op een eerder verschenen configuratie uitkomt, wordt het spel teruggezet naar de eerste stap waar deze configuratie voor is gekomen.  
         - **unique_moves.py**  
             het unique moves algoritme slaat elke configuratie van het bord per stap op. Elke move die gezet wordt mag niet leiden tot een bordconfiguratie die al is voorgekomen in een eerdere zet. Hierdoor moet elke zet leiden tot een nieuw spelbord.  
 
