@@ -86,7 +86,12 @@ class BreathFirst_P(BreathFirst):
                 car_dict[move[-2]] = car_dict[move[-2]] + move[-1]
 
                 # Make movement
-                self.make_move(instance, move[-2], move[-1])
+                if instance.cars[move[-2]].orientation == 'H':
+                    instance.cars[move[-2]
+                                  ].row = instance.cars[move[-2]].row + move[-1]
+                else:
+                    instance.cars[move[-2]
+                                  ].col = instance.cars[move[-2]].col - move[-1]
 
                 # Add movement made by the car to the move_count
                 move_count += abs(move[-1])
@@ -117,4 +122,9 @@ class BreathFirst_P(BreathFirst):
             for move in movement:
 
                 # Make movement
-                self.make_move(instance, move[-2], (-move[-1]))
+                if instance.cars[move[-2]].orientation == 'H':
+                    instance.cars[move[-2]
+                                  ].row = instance.cars[move[-2]].row - move[-1]
+                else:
+                    instance.cars[move[-2]
+                                  ].col = instance.cars[move[-2]].col + move[-1]
