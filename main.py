@@ -7,8 +7,11 @@ import plotly.express as px
 import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import cProfile
+import re
 
-files=["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3.csv", "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv", "data/Rushhour12x12_7.csv"]
+files = ["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3.csv",
+         "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv", "data/Rushhour12x12_7.csv"]
 if __name__ == '__main__':
     print("\nRUSH HOUR - Duo Penotti\n")
     game = input(
@@ -27,7 +30,6 @@ if __name__ == '__main__':
         datafile = "data/Rushhour9x9_6.csv"
     elif game == "7":
         datafile = "data/Rushhour12x12_7.csv"
-
     else:
         print("input invalid")
         raise SystemExit
@@ -43,7 +45,7 @@ if __name__ == '__main__':
         print("Choose an algorithm to solve the puzzel with by typing the number :")
 
         algorithms = {'1': 'Random Algorithm', '2': 'Unique moves Algorithm',
-                    '3': 'Optimized moves Algorithm', '4': 'End Point Algorithm', '5': 'Breadth first algorithm', '6': 'Breadth first plus prooning'}
+                      '3': 'Optimized moves Algorithm', '4': 'End Point Algorithm', '5': 'Breadth first algorithm', '6': 'Breadth first plus prooning'}
 
         for alogrithm in algorithms:
             print(f"- {alogrithm}: {algorithms[alogrithm]}")
@@ -66,17 +68,17 @@ if __name__ == '__main__':
             result = random_algorithm.randy(instance, cardic)
             print(result[0])
             print(result[1])
-            
+
         elif inputalgorithm == '2':
             result = unique_moves.unique(instance, cardic)
             print(result[0])
             print(result[1])
-            
+
         elif inputalgorithm == '3':
             result = short_path.unique(instance, cardic)
             print(result[0])
             print(result[1])
-            
+
         elif inputalgorithm == '4':
             threshold = input(
                 "how often should end-point be used?\nenter value between 0-1\n")
@@ -86,22 +88,28 @@ if __name__ == '__main__':
                 if float(threshold) < 1 and float(threshold) > 0:
                     break
             ep = end_point.End_point(instance, cardic)
+<<<<<<< HEAD
             result=ep.random_run(threshold)
+=======
+            resutl = ep.random_run(threshold)
+>>>>>>> 24b0a02a469a2c449416342168fb08a3f2d40ad0
             print(result[0])
             print(result[1])
-            
-        elif inputalgorithm == '6':
+
+        elif inputalgorithm == '5':
             bf = breadth_first.BreathFirst(instance)
             result = bf.run()
             print(result[0])
             print(result[1])
-            
-        elif inputalgorithm == '7':
+
+        elif inputalgorithm == '6':
             bfp = breadthfirst_prooning.BreathFirst_P(instance)
+            # cProfile.run('bfp.run()')
             result = bfp.run()
 
             print(result[0])
             print(result[1])
+<<<<<<< HEAD
         elif inputalgorithm =='all':
             times = []
             results = []
@@ -201,3 +209,5 @@ if __name__ == '__main__':
             fig2.show()
 
 
+=======
+>>>>>>> 24b0a02a469a2c449416342168fb08a3f2d40ad0
