@@ -5,3 +5,5 @@ __pycache__/
 with_check.csv
 klad.py
 agloritme.py
+results.csv
+df.csv

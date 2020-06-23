@@ -1,0 +1,15 @@
+,Threshold,AVG,Board,Repetitions
+0,0.1,1670.0,data/Rushhour6x6_1.csv,2
+1,0.2,2131.5,data/Rushhour6x6_1.csv,2
+2,0.1,2047.5,data/Rushhour6x6_2.csv,2
+3,0.2,400.0,data/Rushhour6x6_2.csv,2
+4,0.1,2255.0,data/Rushhour6x6_3.csv,2
+5,0.2,1769.5,data/Rushhour6x6_3.csv,2
+6,0.1,12114.0,data/Rushhour9x9_4.csv,2
+7,0.2,7363.0,data/Rushhour9x9_4.csv,2
+8,0.1,46240.0,data/Rushhour9x9_5.csv,2
+9,0.2,15589.0,data/Rushhour9x9_5.csv,2
+10,0.1,3556.0,data/Rushhour9x9_6.csv,2
+11,0.2,2530.0,data/Rushhour9x9_6.csv,2
+12,0.1,7108.0,data/Rushhour12x12_7.csv,2
+13,0.2,14751.5,data/Rushhour12x12_7.csv,2
