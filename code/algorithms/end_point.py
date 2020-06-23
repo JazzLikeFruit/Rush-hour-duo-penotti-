@@ -55,14 +55,15 @@ class End_point():
                         # reload board and check if win has been achieved
                         empty_board = self.instance_copy.create_board()
                         self.instance_copy.load_board(empty_board)
-                        self.instance_copy.check_win()
-                        break      
+                        break
 
             # get other random value
             value = random.uniform(0, 1)
 
-        print(f"finished in {self.movements} steps")
-        return self.movements
+        # return winning board
+        empty_board = self.instance_copy.create_board()
+        result = self.instance_copy.load_board(empty_board)
+        return (self.movements, result)
 
 
     def single_run(self):
@@ -147,7 +148,7 @@ class End_point():
 
                     # reload board and check if win has been achieved
                     empty_board = self.instance_copy.create_board()
-                    print(self.instance_copy.load_board(empty_board))
+                    self.instance_copy.load_board(empty_board)
                     self.instance_copy.check_win()
 
                     # save name of the moved car

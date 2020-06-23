@@ -33,106 +33,106 @@ if __name__ == '__main__':
         times = []
         results = []
         algo = []
+        boardfilelist = []
         df=pd.DataFrame()
+        resultdic = {}
         for boardfile in files:
-            instance = board.Board(boardfile)
-            empty_board = instance.create_board()
-            cardic = instance.load_cars(boardfile)
-            instance.load_board(empty_board)
             
-            resultdic = {}
-            start = time.time()
-            while len(iterations) < 6:
-                startiteration = time.time()
-                result = random_algorithm.randy(instance, cardic)
-                times.append(time.time()-startiteration)
-                results.append(result[0])
-                algo.append('Random')
-                iterations.append(len(iterations)+1)
-            
-            print('Random')
-            uniquedic = {}
-            start = time.time()
-            while len(iterations) < 11:
-                startiteration = time.time()
-                result = unique_moves.unique(instance, cardic)
-                times.append(time.time()-startiteration)
-                results.append(result[0])
-                algo.append('Unique')
-                iterations.append(len(iterations)+1)
-
-            print('Unique')
-            shortdic = {}
-            start = time.time()
-            while len(iterations) < 16:
-                startiteration = time.time()
-                result = short_path.unique(instance, cardic)
-                times.append(time.time()-startiteration)
-                results.append(result[0])
-                algo.append('Short')
-                iterations.append(len(iterations)+1)
-
-            print('Short')
-            enddic = {}
-            start = time.time()
-            while len(iterations) < 21:
-                startiteration = time.time()
-                ep = end_point.End_point(instance, cardic)
-                ep.random_run(0.5)
-                times.append(time.time()-startiteration)
-                results.append(result[0])
-                algo.append('End')
-                iterations.append(len(iterations)+1)
-
-            print('End')
-            breadthprunedic = {}
-            start = time.time()
             while len(iterations) < 26:
-                startiteration = time.time()
-                bfp = breadthfirst_prooning.BreathFirst_P(instance)
-                result = bfp.run()
-                times.append(time.time()-startiteration)
-                results.append(result[0])
-                algo.append('Breadth Prune')
+                instance = board.Board(boardfile)
+                empty_board = instance.create_board()
+                cardic = instance.load_cars(boardfile)
+                instance.load_board(empty_board)
+                boardfilelist.append(boardfile)
                 iterations.append(len(iterations)+1)
-                print(len(iterations)+1)
-            print ('Breadth Prune')  
 
-            # breadthdic = {}
-            # start = time.time()
-            # while len(iterations) < 26:
-            #     startiteration = time.time()
-            #     bf = breadth_first.BreathFirst(instance)
-            #     result = bf.run()
-            #     times.append(time.time()-startiteration)
-            #     results.append(result[0])
-            #     algo.append('Breadth')
-            #     iterations.append(len(iterations)+1)
+                start = time.time()
+                if len(iterations) < 6:
+                    startiteration = time.time()
+                    result = random_algorithm.randy(instance, cardic)
+                    times.append(time.time()-startiteration)
+                    results.append(result[0])
+                    algo.append('Random')
+                    
             
-            # print ('Breadth')
+                print('Random')
+                start = time.time()
+                if len(iterations) < 11:
+                    startiteration = time.time()
+                    result = unique_moves.unique(instance, cardic)
+                    times.append(time.time()-startiteration)
+                    results.append(result[0])
+                    algo.append('Unique')
+
+                print('Unique')
+                start = time.time()
+                if len(iterations) < 16:
+                    startiteration = time.time()
+                    result = short_path.unique(instance, cardic)
+                    times.append(time.time()-startiteration)
+                    results.append(result[0])
+                    algo.append('Short')
+
+                print('Short')
+                start = time.time()
+                if len(iterations) < 21:
+                    startiteration = time.time()
+                    ep = end_point.End_point(instance, cardic)
+                    ep.random_run(0.5)
+                    times.append(time.time()-startiteration)
+                    results.append(result[0])
+                    algo.append('End')
+
+                print('End')
+                start = time.time()
+                if len(iterations) < 26:
+                    startiteration = time.time()
+                    bfp = breadthfirst_prooning.BreathFirst_P(instance)
+                    result = bfp.run()
+                    times.append(time.time()-startiteration)
+                    results.append(result[0])
+                    algo.append('Breadth Prune')
+                    print(len(iterations)+1)
+                print ('Breadth Prune')  
+
+                # breadthdic = {}
+                # start = time.time()
+                # if len(iterations) < 26:
+                #     startiteration = time.time()
+                #     bf = breadth_first.BreathFirst(instance)
+                #     result = bf.run()
+                #     times.append(time.time()-startiteration)
+                #     results.append(result[0])
+                #     algo.append('Breadth')
+                #     iterations.append(len(iterations)+1)
+                
+                # print ('Breadth')
 
             
-            # bouwen van dictioanary en dataframe 
-            resultdic['Iteration'] = iterations
-            resultdic['Time'] = times
-            resultdic['Movements'] = results
-            resultdic['Algorithm'] = algo
-            resultdic['Datafile'] = boardfile
-            dfnew = pd.DataFrame.from_dict(resultdic)
+        # bouwen van dictioanary en dataframe 
+        resultdic['Iteration'] = iterations
+        resultdic['Time'] = times
+        resultdic['Movements'] = results
+        resultdic['Algorithm'] = algo
+        resultdic['Datafile'] = boardfilelist
+        print(boardfilelist)
+        print(algo)
+        print(results)
+        dfnew = pd.DataFrame.from_dict(resultdic)
             # berekenen van gemiddeldes
-            dfnew['Avg Move'] = dfnew.groupby(['Algorithm','Datafile'])['Movements'].transform(
-                'mean').round().astype(int)
-            dfnew['Avg Time'] = dfnew.groupby(['Algorithm','Datafile'])[
-                'Time'].transform('mean').round(2)
-            df = df.append(dfnew)
-        print(df)
+            # dfnew['Avg Move'] = dfnew.groupby(['Algorithm','Datafile'])['Movements'].transform(
+            #     'mean').round().astype(int)
+            # dfnew['Avg Time'] = dfnew.groupby(['Algorithm','Datafile'])[
+            #     'Time'].transform('mean').round(2)
+            # df = df.append(dfnew)
+        dfnew.to_excel('df.xlsx')
         #plotten
-        fig1 = px.histogram(df,
-                        x="Algorithm", y="Movements", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
-        fig1.show()
-        fig2 = px.histogram(df,
-                        x="Algorithm", y="Time", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
-        fig2.show()
+        # fig1 = px.histogram(dfnew,
+        #                 x="Algorithm", y="Movements", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
+        # fig1.show()
+        # fig2 = px.histogram(dfnew,
+        #                 x="Algorithm", y="Time", color="Algorithm", histfunc="avg", facet_col="Datafile", facet_col_wrap=4)
+        # fig2.show()
     else:
         print("input invalid")
         raise SystemExit
@@ -189,7 +189,7 @@ if __name__ == '__main__':
                 if float(threshold) < 1 and float(threshold) > 0:
                     break
             ep = end_point.End_point(instance, cardic)
-            resutl=ep.random_run(threshold)
+            result=ep.random_run(threshold)
             print(result[0])
             print(result[1])
             

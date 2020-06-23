@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 .DS_Store
+with_check.csv
+klad.py
+agloritme.py
