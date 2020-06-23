@@ -9,13 +9,6 @@ class BreathFirst():
     A Breath First algorithm that finds the solution with the least amount of steps.
     """
 
-    def make_move(self, instance, car, movement):
-        if instance.cars[car].orientation == 'H':
-            instance.cars[car].row = instance.cars[car].row + movement
-
-        else:
-            instance.cars[car].col = instance.cars[car].col - movement
-
     def __init__(self, instance):
 
         # Make Copy of instance
@@ -23,6 +16,13 @@ class BreathFirst():
 
         # Define the queue
         self.queue = queue.Queue()
+
+    def make_move(self, instance, car, movement):
+        if instance.cars[car].orientation == 'H':
+            instance.cars[car].row = instance.cars[car].row + movement
+
+        else:
+            instance.cars[car].col = instance.cars[car].col - movement
 
     # Load children of current state
     def build_children(self, instance, initial_movement):
