@@ -30,7 +30,7 @@ if __name__ == '__main__':
     bigthreshold = bigthresholdstart
 
     iteration = 0
-    files = ["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3.csv", "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv", "data/Rushhour12x12_7.csv"]
+    files = ["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3.csv", "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv"]
     
     print("starting run...")
     # make instance for every board file
