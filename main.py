@@ -203,8 +203,8 @@ if __name__ == '__main__':
 
         elif inputalgorithm == '6':
             bfp = breadthfirst_prooning.BreathFirst_P(instance)
-            cProfile.run('bfp.run()')
-            # result = bfp.run()
+            # cProfile.run('bfp.run()')
+            result = bfp.run()
 
             print(result[0])
             print(result[1])

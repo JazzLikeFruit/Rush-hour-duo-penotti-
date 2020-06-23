@@ -67,13 +67,13 @@ class Board():
                 if self.cars[key].length == 3:
                     self.board[posx][posy +
                                      2] = self.board[posx][posy + 2].replace('0', key)
+                continue
 
-            if self.cars[key].orientation == 'V':
-                self.board[posx-1][posy] = self.board[posx -
-                                                      1][posy].replace('0', key)
-                if self.cars[key].length == 3:
-                    self.board[posx-2][posy] = self.board[posx -
-                                                          2][posy].replace('0', key)
+            self.board[posx-1][posy] = self.board[posx -
+                                                  1][posy].replace('0', key)
+            if self.cars[key].length == 3:
+                self.board[posx-2][posy] = self.board[posx -
+                                                      2][posy].replace('0', key)
 
         return self.board
 
@@ -91,39 +91,36 @@ class Board():
                 for x in range(start_x - 1, end_x - 1, -1):
                     if self.board[const_y][x] != "0":
                         return False
-            else:
+                return True
 
-                start = start_x + self.cars[car_key].length
-                end = end_x + self.cars[car_key].length
+            start = start_x + self.cars[car_key].length
+            end = end_x + self.cars[car_key].length
 
-                for x in range(start, end):
-                    if self.board[const_y][x] != "0":
-                        return False
-
+            for x in range(start, end):
+                if self.board[const_y][x] != "0":
+                    return False
             return True
 
-        elif self.cars[car_key].orientation == "V":
-            const_x = self.cars[car_key].row
-            start_y = self.cars[car_key].col
-            end_y = self.cars[car_key].col - blocks
+        const_x = self.cars[car_key].row
+        start_y = self.cars[car_key].col
+        end_y = self.cars[car_key].col - blocks
 
-            if blocks < 0:
-                end_y = self.cars[car_key].col + -(blocks)
-                start = start_y
-                end = end_y
+        if blocks < 0:
+            end_y = self.cars[car_key].col + -(blocks)
+            start = start_y
+            end = end_y
 
-                for y in range(start + 1, end + 1):
-                    if self.board[y][const_x] != "0":
-                        return False
-
-            # ik heb hier aangepast dat de start en eind positie verminderd wordt met de lengte van de auto om te voorkomen dat hij zichzelf checkt
-            else:
-                for y in range(start_y - self.cars[car_key].length, end_y - self.cars[car_key].length, -1):
-                    if self.board[y][const_x] != "0":
-                        return False
-
+            for y in range(start + 1, end + 1):
+                if self.board[y][const_x] != "0":
+                    return False
             return True
-        return False
+
+        # ik heb hier aangepast dat de start en eind positie verminderd wordt met de lengte van de auto om te voorkomen dat hij zichzelf checkt
+
+        for y in range(start_y - self.cars[car_key].length, end_y - self.cars[car_key].length, -1):
+            if self.board[y][const_x] != "0":
+                return False
+        return True
 
     def move(self, car_key, blocks):
 
@@ -132,11 +129,9 @@ class Board():
                 self.cars[car_key].row = self.cars[car_key].row + blocks
                 self.cars[car_key].block_count += blocks
                 return True
-
-            if self.cars[car_key].orientation == 'V':
-                self.cars[car_key].col = self.cars[car_key].col - blocks
-                self.cars[car_key].block_count += blocks
-                return True
+            self.cars[car_key].col = self.cars[car_key].col - blocks
+            self.cars[car_key].block_count += blocks
+            return True
         return False
 
     def check_space(self, car_key):
@@ -147,30 +142,27 @@ class Board():
                 behind = -(self.cars[car_key].row) + 1
                 output = [x for x in range(behind, front-1) if x != 0]
                 return output
-            else:
-                front = self.dimension - self.cars[car_key].row
-                behind = -(self.cars[car_key].row) + 1
-                output = [x for x in range(behind, front) if x != 0]
-                return output
 
-        elif self.cars[car_key].orientation == "V":
-            if self.cars[car_key].length == 3:
-                front = (self.dimension + 1)-self.cars[car_key].col
-                behind = -(self.cars[car_key].col)+2
-                output = [-(x) for x in range(behind+1, front) if x != 0]
-                return output
-            else:
-                front = (self.dimension + 1)-self.cars[car_key].col
-                behind = -(self.cars[car_key].col)+2
-                output = [-(x) for x in range(behind, front) if x != 0]
-                return output
+            front = self.dimension - self.cars[car_key].row
+            behind = -(self.cars[car_key].row) + 1
+            output = [x for x in range(behind, front) if x != 0]
+            return output
+
+        if self.cars[car_key].length == 3:
+            front = (self.dimension + 1)-self.cars[car_key].col
+            behind = -(self.cars[car_key].col)+2
+            output = [-(x) for x in range(behind+1, front) if x != 0]
+            return output
+
+        front = (self.dimension + 1)-self.cars[car_key].col
+        behind = -(self.cars[car_key].col)+2
+        output = [-(x) for x in range(behind, front) if x != 0]
+        return output
 
     def check_win(self):
 
         # check if car X is placed in winning position
-        if self.cars["X"].row == self.win_location or self.move("X", self.win_location - self.cars["X"].row):
-            return True
-        return False
+        return any((self.cars["X"].row == self.win_location, self.move("X", self.win_location - self.cars["X"].row)))
 
     def car_output(self):
         # generates output for check50 after a game is finished
