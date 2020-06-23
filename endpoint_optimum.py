@@ -9,12 +9,12 @@ import copy
 if __name__ == '__main__':
     print("\nEND POINT OPTIMUM TESTER - Duo Penotti\n")
 
-    # get user input for testing variables
+    # Get user input for testing variables
     thresholdstart = float(input("threshold min?\ninput number between 0-0.8\n"))
     thresholdend = float(input("\nthreshold max?\ninput number < 1\n"))
     maxiterations = int(input("\nhow many repetitions per run?\n"))
 
-    # set bigthreshold values
+    # Set bigthreshold values
     bigthresholdstart = thresholdstart * 10
     bigthresholdend = thresholdend * 10
     
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     datafilelist = []
     maxiterationslist = []
 
-    # make dictionary to safe results per threshold iteration to calculate mean
+    # Make dictionary to save results per threshold iteration to calculate mean
     results = {}
     #avgresult = {}
 
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     files = ["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3.csv", "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv"]
     
     print("starting run...")
-    # make instance for every board file
+    # Make instance for every board file
     for boardfile in files[:-1]:
 
         datafile = boardfile
@@ -48,21 +48,21 @@ if __name__ == '__main__':
         resultdic={"Threshold":[], "AVG":[], "Board":[], "Repetitions":[]}
 
         print(f"busy with board {datafile}")
+
         # increment threshold / bigthreshold with 0.1 / 1
         while bigthreshold < bigthresholdend:
             threshold = bigthreshold / 10
             results[threshold] = []
             iteration = 0
 
-            print("\n\n",bigthreshold,"\n\n")
-
+            # Repeat the algorithm a specified amount of times
             while iteration < maxiterations:
-
-                print(iteration)
                 
+                # Run the algorithm
                 result = ep.random_run(threshold)[0]
                 results[threshold].append(result)
 
+                # Reload the board
                 instancecopy = copy.deepcopy(instance)
                 cardic = instancecopy.load_cars(datafile)
                 empty_board = instancecopy.create_board()
@@ -72,25 +72,25 @@ if __name__ == '__main__':
 
                 iteration += 1
                 
+            # Save data for figure
             thresholdlist.append(threshold)
             datafilelist.append(datafile)
             maxiterationslist.append(maxiterations)
             
-            # calculate avg result for threshold      
-            # avgresult[threshold] = np.mean(results[threshold])
+            # Calculate mean
             resultlist.append(np.mean(results[threshold]))
 
-            
             bigthreshold += 1
         
         bigthreshold = bigthresholdstart
 
-    # hier ergens grafiek maken
+    # Add data to resultdic
     resultdic["Threshold"]=thresholdlist
     resultdic["Average Movement"]=resultlist
     resultdic["Board"]=datafilelist
     resultdic["Repetitions"] = maxiterationslist
 
+    # Create figures
     dfend=pd.DataFrame.from_dict(resultdic)
     dfend.to_csv("dfendoutput.csv")
     fig = px.line(dfend,

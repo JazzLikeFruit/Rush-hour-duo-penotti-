@@ -1,23 +1,26 @@
+"""
+This file contains the implementation of our Rush hour project. 
+To run the code write "python main.py" in your terminal.
+
+"""
+
+
 from code.algorithms import random_algorithm, unique_moves, short_path, end_point, breadth_first, breadthfirst_prooning
 from code.classes import cars, board
 from numpy import random
-import csv
 import time
 import plotly.express as px
 import pandas as pd
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import cProfile
-import re
 import pyfiglet
 
 files = ["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3.csv",
          "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv", "data/Rushhour12x12_7.csv"]
 if __name__ == '__main__':
-    # file selection
-    
     print(pyfiglet.figlet_format('Rush Hour', font = 'slant'))
     print("Duo Penotti\n")
+
+    # File selection
     game = input(
         "select game:\n- 1 6x6\n- 2 6x6\n- 3 6x6\n- 4 9x9\n- 5 9x9\n- 6 9x9\n- 7 12x12\n")
     if game == "1":
@@ -40,7 +43,8 @@ if __name__ == '__main__':
 
     if game.lower() != "all":
         print(f"Board {game} chosen")
-        # load chosen board
+
+        # Load chosen board
         instance = board.Board(datafile)
         empty_board = instance.create_board()
         cardic = instance.load_cars(datafile)
@@ -54,28 +58,30 @@ if __name__ == '__main__':
 
         for alogrithm in algorithms:
             print(f"- {alogrithm}: {algorithms[alogrithm]}")
-
+        
+        # Algorithm selection
         while True:
-
+        
             print("\nEnter your choice:")
             inputalgorithm = input().lower()
             if inputalgorithm not in algorithms:
                 print('Incorrect algorithm select one of the following: ')
 
             elif inputalgorithm in algorithms and inputalgorithm != 'all':
-
                 print('\nLoading', algorithms[inputalgorithm], '...\n')
                 break
+            
             elif inputalgorithm == 'all':
-                print('\nLoading sample of all algorithms...\n')
+                print('\nLoading sample of all algorithms. Might want to grab a coffee this could take a while...\n')
                 break
+
         if inputalgorithm == '1':
             result = random_algorithm.randy(instance, cardic)
             print(result[0])
             print(result[1])
 
         elif inputalgorithm == '2':
-            # try/except implemented because this function has a lot of recursion
+            # Try/except implemented because this function has a lot of recursion
             try:
                 result = unique_moves.unique(instance, cardic)
                 print(result[0])
@@ -90,7 +96,7 @@ if __name__ == '__main__':
             print(result[1])
 
         elif inputalgorithm == '4':
-            # threshold for random movement can be manually selected
+            # Threshold for random movement can be manually selected
             threshold = input(
                 "how often should end-point be used?\nenter value between 0-1\n")
             while True:
@@ -105,13 +111,13 @@ if __name__ == '__main__':
 
         elif inputalgorithm == '5':
             bfp = breadthfirst_prooning.BreathFirst_P(instance)
-            # cProfile.run('bfp.run()')
             result = bfp.run()
 
             print(result[0])
             print(result[1])
+
         elif inputalgorithm == 'all':
-            # automatically runnning multiple iterations of all functions (with some exceptions handled in a user friendly manner)
+            # Automatically runnning multiple iterations of all functions (with some exceptions handled in a user friendly manner)
             times = []
             results = []
             algo = []
@@ -157,23 +163,26 @@ if __name__ == '__main__':
                         iterations = 15
                         print(
                             'Unique reached recursion depth and algorithm was skipped')
-
+                            
+                # BreadthFirst is ran only once because it always gives the same result
                 if 14 < iterations < 16 and datafile in files[:4]:
                     startiteration = time.time()
-                    bfp = breadthfirst_prooning.BreathFirst_P(instance, cardic)
+                    bfp = breadthfirst_prooning.BreathFirst_P(instance)
                     result = bfp.run()
                     times.append(time.time()-startiteration)
                     results.append(result[0])
                     algo.append('Breadth Pruned')
                     iterations += 1
                     print('Breadth Pruned')
-                # prevent breadth first with prooning from running on the most difficult three boards
+
+                # Prevent breadth first with prooning from running on the most difficult three boards
                 if 14 < iterations < 16 and datafile not in files[:4]:
                     print(
                         'This board has not been possible to solve with this algorithm thus far')
                     iterations += 1
 
                 if 15 < iterations:
+                    # Threshold set to 0.7 since our exploration of the results concluded that this gives the best results for this algorithm
                     startiteration = time.time()
                     ep = end_point.End_point(instance, cardic)
                     result = ep.random_run(0.7)
@@ -183,7 +192,7 @@ if __name__ == '__main__':
                     iterations += 1
                     print('End')
 
-            # building of dictionary and dataframe
+            # Building of dictionary and dataframe
             resultdic['Iteration'] = list(range(len(times)))
             resultdic['Time'] = times
             resultdic['Movements'] = results
@@ -191,7 +200,7 @@ if __name__ == '__main__':
 
             dfnew = pd.DataFrame.from_dict(resultdic)
 
-            # plotting of the sample of algorithms
+            # Plotting of the sample of algorithms using Plotly Express
             fig1 = px.histogram(dfnew,
                                 x="Algorithm", y="Movements", color="Algorithm", histfunc="avg")
             fig1.show()

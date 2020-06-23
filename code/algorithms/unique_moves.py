@@ -1,15 +1,14 @@
-from numpy import random
-import csv
 import random
-import copy
 import time
 import _pickle as cPickle
-"""
-Algorithm that forces unique configurations on every turn. 
-"""
+
 
 
 def unique(inst, cars):
+    """
+    Algorithm that forces unique configurations on every turn. 
+    """
+    
     start=time.time()
     # Copy of the main game instance
     instance_copy = cPickle.loads(cPickle.dumps(inst, -1))
@@ -17,7 +16,7 @@ def unique(inst, cars):
     movements = 0
 
     def save_board(instance_copy):
-        # saves car coordinates of current move in a dictionary
+        # Saves car coordinates of current move in a dictionary
         key = movements
         step = {instance_copy.cars[car]: (
             instance_copy.cars[car].col, instance_copy.cars[car].row) for car in instance_copy.cars}
@@ -32,7 +31,7 @@ def unique(inst, cars):
         return instance_copy.version
 
     def check_move(instance_copy):
-        # checks if move configuration has been achieved in earlier step and returns False if this is the case
+        # Checks if move configuration has been achieved in earlier step and returns False if this is the case
         current = {instance_copy.cars[car]: (instance_copy.cars[car].col, instance_copy.cars[car].row) for car in instance_copy.cars}
 
         for board in instance_copy.version:
@@ -44,7 +43,7 @@ def unique(inst, cars):
     # Run loop while game not winnable
     while not instance_copy.cars["X"].row == instance_copy.win_location:
 
-        # select random car
+        # Select random car
         randomcar = random.choice(list(cars))
 
         # Check movable spaces of the car
@@ -64,7 +63,7 @@ def unique(inst, cars):
             # If the move was valid (and therefore excecuted) but the configuration has been seen before the movement is reverted
             else:
                 instance_copy.move(randomcar, (-randommovement))
-            # reload board
+            # Reload board
             empty_board = instance_copy.create_board()
             result=instance_copy.load_board(empty_board)
 

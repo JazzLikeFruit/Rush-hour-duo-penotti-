@@ -1,11 +1,10 @@
-import time
-import _pickle as cPickle
+
 from .breadth_first import BreathFirst
 
 
 class BreathFirst_P(BreathFirst):
     """
-    Impliments the breadth first algorithm by not adding already seen boards to queue
+    Implements the breadth first algorithm by not adding already seen boards to queue
 
     """
     # Make trie of seen boards
@@ -15,7 +14,7 @@ class BreathFirst_P(BreathFirst):
         # Mark the end of board
         _end = '_end_'
 
-        # root of trie
+        # Root of trie
         current_dict = root
 
         # Loop through dictionary and add tuple to trie
@@ -34,7 +33,7 @@ class BreathFirst_P(BreathFirst):
         # Start of trie
         current_dict = trie
 
-        # search trie for individual tuple
+        # Search trie for individual tuple
         for key in dictionary:
             set = (key, dictionary[key])
 
@@ -76,7 +75,7 @@ class BreathFirst_P(BreathFirst):
             for car in instance.cars:
                 car_dict[car] = 0
 
-            # get next movement from queue
+            # Get next movement from queue
             movement = self.queue.get()
 
             # Make movement

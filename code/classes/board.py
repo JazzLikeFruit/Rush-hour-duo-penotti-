@@ -13,27 +13,27 @@ class Board():
         self.cars = self.load_cars(source_file)
         self.version = {}
 
-        # define dimension based on name source file
+        # Define dimension based on name source file
         self.dimension = int(re.search(r"\d+", source_file)[0])
 
         self.win_location = self.dimension - 1
 
     def load_cars(self, datafile):
-        # load cars dictionary from datafile input
+        # Load cars dictionary from datafile input
         number = int(re.search(r"\d+", datafile)[0]) + 1
 
         with open(datafile, 'r') as file:
             cars = {}
             reader = csv.DictReader(file)
 
-            # loop through input file to add cars to dictionary
+            # Loop through input file to add cars to dictionary
             for row in reader:
                 cars[row['car']] = Car(
                     row['orientation'], row['row'],  (number - int(row['col'])), row['length'])  # Functie om het dummy bord op basis van de input van auto's te voorzien
         return cars
 
     def create_board(self):
-        # creates board as an array filled with 0s based on dimension
+        # Creates board as an array filled with 0s based on dimension
         boarddummy = np.zeros(
             (self.dimension + 2, self.dimension + 2), int).astype(str)
 
@@ -43,32 +43,33 @@ class Board():
             boarddummy[0][x] = '|'
             boarddummy[-1][x] = '|'
         boarddummy[(len(boarddummy) - int(len(boarddummy) / 2) - 1)
-                   ][-1] = '.'  # creates board exit with '.'
+                   ][-1] = '.'  # Creates board exit with '.'
         return boarddummy
 
     def load_board(self, empty_board):
         self.board = empty_board
 
-        # loop through cars dictionary to fill board
+        # Loop through cars dictionary to fill board
         for key, row in self.cars.items():
             posx = self.cars[key].col
             posy = self.cars[key].row
 
-            # replace 0s on board with car name chars
+            # Replace 0s on board with car name chars
             self.board[posx][posy] = self.board[posx][posy].replace(
                 '0', key)
 
-            # determine car orientation to place car correctly on the board
+            # Determine car orientation to place car correctly on the board
             if self.cars[key].orientation == 'H':
                 self.board[posx][posy +
                                  1] = self.board[posx][posy + 1].replace('0', key)
 
-                # determine car size and add a block if the car length = 3
+                # Determine car size and add a block if the car length = 3
                 if self.cars[key].length == 3:
                     self.board[posx][posy +
                                      2] = self.board[posx][posy + 2].replace('0', key)
                 continue
 
+            # Place vertical cars on the board
             self.board[posx-1][posy] = self.board[posx -
                                                   1][posy].replace('0', key)
             if self.cars[key].length == 3:
@@ -79,75 +80,84 @@ class Board():
 
     def check_move(self, car_key, blocks):
 
-        # moves the car along the number of blocks depending on orientation
+        # Moves the car along the number of blocks depending on orientation
         if self.cars[car_key].orientation == "H":
             const_y = self.cars[car_key].col
             end_x = self.cars[car_key].row + blocks
             start_x = self.cars[car_key].row
 
-            # determine if the car moves in positive or negative direction
+            # Determine if the car moves in positive or negative direction
             if blocks < 0:
 
                 for x in range(start_x - 1, end_x - 1, -1):
                     if self.board[const_y][x] != "0":
                         return False
                 return True
-
+            
+            # Add car movement in positive direction
             start = start_x + self.cars[car_key].length
             end = end_x + self.cars[car_key].length
 
+            # Check if movement is valid 
             for x in range(start, end):
                 if self.board[const_y][x] != "0":
                     return False
             return True
-
+        
+        # Check movement for positive cars 
         const_x = self.cars[car_key].row
         start_y = self.cars[car_key].col
         end_y = self.cars[car_key].col - blocks
 
+        # Check if movement is positive 
         if blocks < 0:
             end_y = self.cars[car_key].col + -(blocks)
             start = start_y
             end = end_y
 
+            # Check movement of car 
             for y in range(start + 1, end + 1):
                 if self.board[y][const_x] != "0":
                     return False
             return True
-
-        # ik heb hier aangepast dat de start en eind positie verminderd wordt met de lengte van de auto om te voorkomen dat hij zichzelf checkt
 
         for y in range(start_y - self.cars[car_key].length, end_y - self.cars[car_key].length, -1):
             if self.board[y][const_x] != "0":
                 return False
         return True
 
+    # Make movement 
     def move(self, car_key, blocks):
 
+        # Check if movement is valid 
         if self.check_move(car_key, blocks):
             if self.cars[car_key].orientation == 'H':
                 self.cars[car_key].row = self.cars[car_key].row + blocks
                 self.cars[car_key].block_count += blocks
                 return True
+            
+            # Move horizontal car 
             self.cars[car_key].col = self.cars[car_key].col - blocks
             self.cars[car_key].block_count += blocks
             return True
         return False
 
     def check_space(self, car_key):
-        # check which spaces are available to move in around the car
+        # Check which spaces are available to move in around the car
         if self.cars[car_key].orientation == "H":
             if self.cars[car_key].length == 3:
                 front = self.dimension - self.cars[car_key].row
                 behind = -(self.cars[car_key].row) + 1
                 output = [x for x in range(behind, front-1) if x != 0]
                 return output
-
+            
+            # Check space for vertical cars
             front = self.dimension - self.cars[car_key].row
             behind = -(self.cars[car_key].row) + 1
             output = [x for x in range(behind, front) if x != 0]
             return output
-
+        
+        # Check size of car and ditermine space 
         if self.cars[car_key].length == 3:
             front = (self.dimension + 1)-self.cars[car_key].col
             behind = -(self.cars[car_key].col)+2
@@ -158,27 +168,27 @@ class Board():
         behind = -(self.cars[car_key].col)+2
         output = [-(x) for x in range(behind, front) if x != 0]
         return output
-
+    
+    # Check if car X is placed in winning position
     def check_win(self):
-
-        # check if car X is placed in winning position
         return any((self.cars["X"].row == self.win_location, self.move("X", self.win_location - self.cars["X"].row)))
 
+    # Generates output for check50 after a game is finished
     def car_output(self):
-        # generates output for check50 after a game is finished
-        with open('with_check.csv', 'a', newline='') as output:
+        with open('ouput.csv', 'a', newline='') as output:
             writer = csv.writer(output)
             writer.writerow(["car", "move"])
 
+            # Loop through keys and record movements 
             for key in self.cars:
-                car = key
                 move = self.cars[key].block_count
 
                 if self.cars[key].block_count != 0:
-                    writer.writerow([car, move])
+                    writer.writerow([key, move])
 
+    # Saves car coordinates of current move in a dictionary
     def save_board(self, movement, current_board):
-        # saves car coordinates of current move in a dictionary
+        
         key = movement
         count = 0
         step = {self.cars[car]: (
@@ -188,10 +198,12 @@ class Board():
 
         return self.version
 
+    # Reset the saved boards
     def empty_saves(self):
         self.version.clear()
         return self.version
-
+    
+    # Return list with possible movements 
     def possible_movements(self):
         possibilities = []
         for key in self.cars:

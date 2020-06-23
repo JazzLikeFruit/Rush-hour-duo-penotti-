@@ -57,7 +57,7 @@ class BreathFirst():
 
             move_count = 0
 
-            # get next movement from queue
+            # Get next movement from queue
             movement = self.queue.get()
 
             # Make movement using tuple

@@ -1,10 +1,8 @@
-from numpy import random
-import csv
 import random
 import copy
 import _pickle as cPickle
 """
-Algorithm that optimizes total movements based on previous boards. 
+Algorithm that optimizes total movements based on saved versions of previous boards. 
 """
 
 
@@ -15,7 +13,7 @@ def short(inst, cars):
     movements = 0
 
     def save_board(instance_copy):
-        # saves car coordinates of current move in a dictionary
+        # Saves car coordinates of current move in a dictionary
         key = movements
         step = {instance_copy.cars[car]: (
             instance_copy.cars[car].col, instance_copy.cars[car].row) for car in instance_copy.cars}
@@ -25,13 +23,13 @@ def short(inst, cars):
         return instance_copy.version
     
     def empty_saves(instance_copy):
-        # clear the dictionary
+        # Clear the dictionary
         instance_copy.version.clear()
         return instance_copy.version
 
     
     def check_move(instance_copy):
-        # checks if move configuration has been achieved in earlier step and returns True if this is not the case and removes all keys after this point if it is the case
+        # Checks if move configuration has been achieved in earlier step and returns True if this is not the case and removes all keys after this point if it is the case
         current = {instance_copy.cars[car]: (instance_copy.cars[car].col, instance_copy.cars[car].row) for car in instance_copy.cars}
 
         for board in instance_copy.version:
@@ -59,10 +57,10 @@ def short(inst, cars):
             # Check if move leads to a configuration that has been seen before
             check=check_move(instance_copy)
 
-            # if true reset the total movements
+            # If true reset the total movements
             if check[0]:
                 movements = check[1]
-            # else add 1 to movements
+            # Else add 1 to movements
             else:
                 movements += 1
         
