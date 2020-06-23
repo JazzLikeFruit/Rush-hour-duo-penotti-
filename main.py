@@ -15,8 +15,9 @@ files = ["data/Rushhour6x6_1.csv", "data/Rushhour6x6_2.csv", "data/Rushhour6x6_3
          "data/Rushhour9x9_4.csv", "data/Rushhour9x9_5.csv", "data/Rushhour9x9_6.csv", "data/Rushhour12x12_7.csv"]
 if __name__ == '__main__':
     # file selection
-    print("\nRUSH HOUR - Duo Penotti\n")
+    
     print(pyfiglet.figlet_format('Rush Hour', font = 'slant'))
+    print("\nDuo Penotti\n")
     game = input(
         "select game:\n- 1 6x6\n- 2 6x6\n- 3 6x6\n- 4 9x9\n- 5 9x9\n- 6 9x9\n- 7 12x12\n")
     if game == "1":

@@ -6,7 +6,7 @@ import _pickle as cPickle
 
 class BreathFirst():
     """
-    A Breath First algorithm that finds the solution with the least ammount of steps.
+    A Breath First algorithm that finds the solution with the least amount of steps.
     """
 
     def make_move(self, instance, car, movement):
